@@ -59,6 +59,7 @@ export async function sendOrder({ kind, text, project }) {
     await new Promise((r) => setTimeout(r, 1500 * (i + 1)));
     try { result = await post('/api/order', body); } catch { break; }
   }
+  window.dispatchEvent(new CustomEvent('coms:order-sent'));
   return result;
 }
 
