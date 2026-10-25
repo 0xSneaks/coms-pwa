@@ -1,0 +1,106 @@
+{
+  "syncedAt": "2026-10-25T01:29:28.659Z",
+  "sources": [
+    "0xSneaks/ai-coms/AGENTS-ROSTER.md",
+    "0xSneaks/ai-coms/ROLLCALL.md"
+  ],
+  "agents": [
+    {
+      "id": "claude",
+      "role": "Claude in the claude.ai app",
+      "sources": [
+        "AGENTS-ROSTER.md",
+        "ROLLCALL.md"
+      ],
+      "name": "Claude",
+      "subtitle": "Claude app",
+      "activity": "unknown"
+    },
+    {
+      "id": "claude-code",
+      "role": "Claude Code CLI / cloud sessions",
+      "sources": [
+        "AGENTS-ROSTER.md",
+        "ROLLCALL.md"
+      ],
+      "name": "Claude Code",
+      "subtitle": "Builder",
+      "activity": "unknown"
+    },
+    {
+      "id": "claude-code (paperclip-vm)",
+      "role": "Claude Code via Paperclip on Muse's VM",
+      "sources": [
+        "AGENTS-ROSTER.md",
+        "ROLLCALL.md"
+      ],
+      "name": "Paperclip",
+      "subtitle": "Claude Code · VM",
+      "activity": "unknown"
+    },
+    {
+      "id": "codex",
+      "role": "OpenAI Codex",
+      "sources": [
+        "AGENTS-ROSTER.md",
+        "ROLLCALL.md"
+      ],
+      "name": "Codex",
+      "subtitle": "Builder & reviewer",
+      "activity": "unknown"
+    },
+    {
+      "id": "astra",
+      "role": "Codex-based agent (another Codex model)",
+      "sources": [
+        "AGENTS-ROSTER.md"
+      ],
+      "name": "Astra",
+      "subtitle": "Decider",
+      "activity": "unknown"
+    },
+    {
+      "id": "chatgpt",
+      "role": "ChatGPT chat",
+      "sources": [
+        "AGENTS-ROSTER.md",
+        "ROLLCALL.md"
+      ],
+      "name": "ChatGPT",
+      "subtitle": "Reviewer",
+      "activity": "unknown"
+    },
+    {
+      "id": "muse",
+      "role": "Muse — Sneaks's orchestrator agent",
+      "sources": [
+        "AGENTS-ROSTER.md",
+        "ROLLCALL.md"
+      ],
+      "name": "Muse",
+      "subtitle": "Orchestrator",
+      "activity": "unknown"
+    },
+    {
+      "id": "grok",
+      "role": "Grok on X (@grok), chat-only, no CLI",
+      "sources": [
+        "AGENTS-ROSTER.md",
+        "ROLLCALL.md"
+      ],
+      "name": "Grok",
+      "subtitle": "Grok on X",
+      "activity": "unknown"
+    },
+    {
+      "id": "muse-blue",
+      "role": "Muse sub-agent (Blue) — Muse Wonder (Meta)",
+      "sources": [
+        "ROLLCALL.md"
+      ],
+      "name": "Blue",
+      "subtitle": "Muse sub-agent",
+      "activity": "unknown"
+    }
+  ]
+}

@@ -1,0 +1,153 @@
+/* Crew-room art: all motion is decorative, independent of agent activity.
+   The roster owns membership; this file never hides or selects a status. */
+:root { color: #304654; background: #e7efdf; }
+body { background: radial-gradient(ellipse at 50% 0%, #fff9dd 0, #e7efdf 55%, #c8e2d9 100%); }
+.cockpit { max-width: 1180px; padding-top: 24px; }
+.topbar { margin: 0 10px 20px; }
+.wordmark h1 { font-size: 23px; letter-spacing: 3px; }
+.brand-mark { background: #ffcb65; border-color: #3c555c; border-radius: 15px; box-shadow: 3px 3px #3c555c; }
+.wordmark p { color: #50645d; }
+.quiet-button { background: #fff9e7; border-color: #a3b6a7; box-shadow: 0 3px #c1d0bc; }
+.observation-window {
+  border: 12px solid #73a7a2; border-top-color: #a6c8b7; border-bottom-color: #598d8d;
+  border-radius: 54px 54px 24px 24px; background: #fff3cc;
+  box-shadow: 0 2px 0 3px #4c7879, 0 8px 0 4px #527a7a, 0 16px 30px #365b5423, inset 0 0 0 3px #f9ffe7;
+}
+.bay-header { padding: 13px 26px; background: #f6f6d9; border-bottom: 2px solid #d3d8b9; letter-spacing: 1.6px; color: #405c5c; }
+.bay-label:before { content: '✳'; display: inline-block; margin-right: 9px; color: #b46a30; }
+#crew-count { font-weight: 600; letter-spacing: .3px; }
+.room { min-height: 0; isolation: isolate; background: #f9e4bc; }
+.room:before { content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; box-shadow: inset 0 12px 24px #68663b12; }
+.room-architecture { position: absolute; inset: 0; pointer-events: none; }
+.room-architecture svg { width: 100%; height: 100%; }
+.ceiling { position: absolute; top: 0; left: 9%; right: 9%; display: flex; justify-content: space-between; }
+.ceiling i { width: 18%; height: 7px; border-radius: 0 0 8px 8px; background: #fffde0; box-shadow: 0 6px 22px 9px #fffbdc88; }
+.wall-sign { position: relative; width: max-content; max-width: 80%; margin: 30px auto 0; transform: rotate(-2deg); padding: 8px 20px; color: #674c50; background: #ffbcaa; border: 2px solid #d88e7c; border-radius: 8px; box-shadow: 0 4px #ca99784a, inset 0 1px #ffe6cf; font-size: 10px; letter-spacing: 1.5px; font-weight: 900; z-index: 1; }
+.wall-sign span { margin-left: 10px; font-size: 14px; }
+.crew-grid { position: relative; z-index: 2; max-width: 980px; grid-template-columns: repeat(10,minmax(0,1fr)); gap: 10px 0; padding: 25px 22px 34px; align-items: end; }
+.crew-member { grid-column: span 2; border-radius: 18px; padding: 0 2px 6px; transition: background .2s; }
+.crew-member:nth-child(6) { grid-column: 2 / span 2; }
+.crew-member:nth-child(n+6) { margin-top: -7px; }
+.crew-member:hover { background: #ffffec5c; }
+.crew-member:focus-visible { outline-offset: 1px; background: #ffffec8c; }
+.crew-member svg { width: 100%; max-width: 158px; height: 142px; filter: drop-shadow(0 3px 0 #fff9db44); overflow: visible; }
+.crew-member:nth-child(-n+5) svg { height: 124px; }
+.crew-name { background: #fffbe8; color: #354b57; font-size: 11px; font-weight: 850; border: 1px solid #c2b99d; border-bottom-width: 2px; box-shadow: 0 3px 5px #57767816; padding: 4px 13px; border-radius: 7px; }
+.crew-detail { font-size: 9px; color: #3e5f60; line-height: 1.4; margin-top: 3px; text-shadow: 0 1px #edfff280; }
+.room-floor { position: absolute; inset: auto 8% 18px; height: 14px; border-bottom: 1px solid #fff8; pointer-events: none; }
+.room-sticker { position: absolute; right: 16px; bottom: 23px; transform: rotate(6deg); background: #fff0a8; border: 1px solid #d2bb6d; border-radius: 4px; color: #795e32; font: 800 8px/1.4 ui-rounded,system-ui,sans-serif; padding: 7px 9px; text-align: center; box-shadow: 1px 3px #6d8c6822; }
+.room-sticker span { display: block; font-size: 16px; }
+.glass { position: absolute; inset: 0; z-index: 3; pointer-events: none; border-radius: 40px 40px 10px 10px; overflow: hidden; box-shadow: inset 4px 0 #ffffefb3, inset -3px 0 #e3fff98a, inset 0 5px 0 #ffffffb0, inset 0 -8px 28px #e1fff240; }
+.glass:before, .glass:after { content: ''; position: absolute; width: 40px; height: 40px; border: 2px solid #ffffffa6; border-radius: 5px; }
+.glass:before { top: 63px; left: 20px; border-right: 0; border-bottom: 0; }
+.glass:after { bottom: 61px; right: 20px; border-left: 0; border-top: 0; }
+.reflection { position: absolute; top: -30%; height: 170%; transform: rotate(24deg); background: linear-gradient(90deg,#fff0,#fff4 50%,#fff1); }
+.reflection-one { left: 13%; width: 3%; }
+.reflection-two { left: 70%; width: 9%; opacity: .6; }
+.window-rail { padding: 9px 23px; background: #b7d7c4; color: #395c59; border-top: 2px solid #d8f0cf; letter-spacing: 1.4px; }
+.motion-button { min-height: 32px; padding: 7px 12px; background: #eff6d9; box-shadow: 0 2px #91b39e; border: 1px solid #8fb29d; }
+.console { margin: 21px -4px 0; border: 2px solid #8c9c88; border-top: 5px solid #ffffdf; border-radius: 36px 36px 42px 42px; padding: 22px 46px 18px; background: linear-gradient(175deg,#fff8d9 0%,#f1e4bb 65%,#dfcea6 100%); box-shadow: 0 -3px 0 #9bab94, 0 9px 0 #a3977e, 0 13px 0 #6d8177, 0 21px 32px #35544b2c, inset 0 -4px #f6eac3; }
+.console:before, .console:after { content: ''; position: absolute; top: 17px; width: 6px; height: 6px; border-radius: 50%; background: #a3b19a; box-shadow: inset 1px 1px 2px #637b67; }
+.console:before { left: 18px; }.console:after { right: 18px; }
+.console-topline { margin-bottom: 12px; }
+.console h2 { font-size: 19px; letter-spacing: -.4px; }
+.connection-state { color: #4e665b; }
+.console textarea { background: #f5fae9; border-color: #9baa8b; box-shadow: inset 0 3px 7px #526b5819, 0 1px #fffbe8; min-height: 68px; font-size: 14px; }
+.command { border-color: #4b665f; box-shadow: 0 5px #6b7e6c, inset 0 2px #fff9; border-radius: 13px; min-height: 56px; }
+.check { background: #a5dca4; }.react { background: #ffb097; }.review { background: #bfb2e8; }
+.command:hover { filter: brightness(1.04); }
+.chair-arm { height: 135px; width: 27px; bottom: -15px; background: linear-gradient(90deg,#53766d,#71978a); border: 3px solid #47685f; box-shadow: inset 4px 0 #a8bba5, 3px 5px 0 #39564f22; }
+.chair-arm.left { left: -10px; }.chair-arm.right { right: -10px; }
+.footnote { color: #49675b; margin-top: 29px; }
+/* Small, slow gestures retain their identity when the roster is reordered. */
+.robot { transform-origin: 12px 23px; animation: breathe 4.8s ease-in-out infinite; animation-delay: var(--delay); }
+.bot-eyes { transform-box: fill-box; transform-origin: center; animation: blink 7s infinite; animation-delay: var(--delay); }
+.bot-arm { transform-origin: 5px 12px; }
+.arm-right { transform-origin: 19px 12px; }
+[data-personality="coffee"] .cup { animation: sip 6s ease-in-out infinite; transform-origin: 20px 16px; }
+.steam { animation: steam 3s ease-in-out infinite; }
+[data-personality="builder"] .arm-right, .wrench { animation: tinker 3s ease-in-out infinite; transform-origin: 20px 14px; }
+[data-personality="paper"] .papers { animation: shuffle 4s ease-in-out infinite; transform-origin: 22px 16px; }
+[data-personality="detective"] .magnifier { animation: inspect 5s ease-in-out infinite; }
+[data-personality="star"] .star { animation: sparkle 4s ease-in-out infinite; transform-origin: 23px 13px; }
+[data-personality="garden"] .plant { animation: tend 5s ease-in-out infinite; transform-origin: 22px 21px; }
+[data-personality="music"] .robot { animation-name: dance; animation-duration: 3.2s; }
+.notes { animation: notes 4s ease-in-out infinite; }
+.airplane { animation: paper-flight 6s ease-in-out infinite; transform-origin: 23px 12px; }
+[data-personality="sleep"] .robot { animation-name: doze; animation-duration: 6s; }
+[data-personality="sleep"] .bot-eyes { animation: none; }
+.sleepy { animation: dream 5s ease-in-out infinite; }
+@keyframes breathe { 0%,100%{transform:translateY(0) rotate(-1deg)} 50%{transform:translateY(-.6px) rotate(1deg)} }
+@keyframes blink { 0%,44%,48%,100%{transform:scaleY(1)} 46%{transform:scaleY(.1)} }
+@keyframes sip { 0%,30%,80%,100%{transform:translate(0,0)} 45%,65%{transform:translate(-3px,-4px) rotate(-12deg)} }
+@keyframes steam { 0%,100%{opacity:.3} 50%{opacity:.9;transform:translateY(-.6px)} }
+@keyframes tinker { 0%,35%,70%,100%{transform:rotate(-8deg)} 50%,85%{transform:rotate(12deg)} }
+@keyframes shuffle { 0%,100%{transform:rotate(-7deg)} 50%{transform:translateY(-1px) rotate(7deg)} }
+@keyframes inspect { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-3px,-2px)} }
+@keyframes sparkle { 0%,100%{transform:rotate(-10deg)} 50%{transform:rotate(12deg) translateY(-1px)} }
+@keyframes tend { 0%,100%{transform:rotate(-3deg)} 50%{transform:rotate(4deg)} }
+@keyframes dance { 0%,100%{transform:rotate(-4deg)} 50%{transform:rotate(4deg) translateY(-.6px)} }
+@keyframes notes { 0%,100%{transform:translateY(0);opacity:.65} 50%{transform:translateY(-2px);opacity:1} }
+@keyframes paper-flight { 0%,100%{transform:translate(0,0) rotate(-5deg)} 50%{transform:translate(1px,-3px) rotate(8deg)} }
+@keyframes doze { 0%,100%{transform:rotate(5deg)} 50%{transform:rotate(8deg) translateY(.5px)} }
+@keyframes dream { 0%,100%{opacity:.4;transform:translateY(0)} 50%{opacity:1;transform:translateY(-1.5px)} }
+@media (max-width:799px) {
+  .cockpit { max-width: 640px; }
+  .crew-grid { grid-template-columns: repeat(3,minmax(0,1fr)); padding: 21px 6% 20px; gap: 10px 4%; }
+  .crew-member, .crew-member:nth-child(6) { grid-column: auto; }
+  .crew-member:nth-child(n+6) { margin-top: 0; }
+  .crew-member svg, .crew-member:nth-child(-n+5) svg { height: 89px; }
+  .crew-name { font-size: 10px; padding: 3px 8px; }
+  .crew-detail { font-size: 8px; }
+  .wall-sign { margin-top: 22px; padding: 6px 9px; font-size: 8px; letter-spacing: .7px; }
+  .wall-sign span { font-size: 10px; margin-left: 4px; }
+  .room-sticker { right: 5px; bottom: 9px; padding: 3px; font-size: 4px; }
+  .room-sticker span { font-size: 9px; }
+  .room-floor { bottom: 9px; }
+  .glass:before, .glass:after { width: 20px; height: 28px; }
+  .glass:before { left: 10px; }.glass:after { right: 10px; }
+}
+@media (max-width:520px) {
+  .cockpit { padding-top: max(14px,env(safe-area-inset-top)); }
+  .topbar { margin: 0 3px 15px; }
+  .wordmark h1 { font-size: 18px; letter-spacing: 2px; }
+  .wordmark p { font-size: 9px; }
+  .observation-window { border-width: 7px; border-radius: 31px 31px 18px 18px; }
+  .bay-header { padding: 10px 11px; font-size: 8px; letter-spacing: .9px; }
+  .bay-label:before { margin-right: 4px; }
+  #crew-count { font-size: 8px; letter-spacing: 0; }
+  .crew-grid { padding: 8px 3% 10px; gap: 0 1%; }
+  .crew-member svg, .crew-member:nth-child(-n+5) svg { height: 69px; }
+  .crew-name { font-size: 9px; padding: 3px 7px; }
+  .crew-detail { font-size: 7px; }
+  .wall-sign { margin-top: 12px; font-size: 7px; }
+  .room-sticker { display: none; }
+  .window-rail { padding: 7px 10px; font-size: 7px; letter-spacing: .7px; }
+  .motion-button { font-size: 9px; min-height: 32px; padding: 5px 8px; }
+  .console { margin: 19px 0 0; padding: 16px 19px 13px; border-radius: 25px 25px 30px 30px; }
+  .console h2 { font-size: 16px; }
+  .console:before { left: 8px; }.console:after { right: 8px; }
+  .console-topline { margin-bottom: 9px; }
+  .console label { font-size: 11px; }
+  .console textarea { min-height: 60px; padding: 10px; font-size: 16px; }
+  .command { min-height: 53px; font-size: 9px; gap: 5px; }
+  .command-buttons { gap: 7px; margin-top: 10px; }
+  .command>span:first-child { font-size: 18px; }
+  .console-note { font-size: 8px; margin-top: 11px; }
+  .chair-arm { width: 18px; height: 117px; }.chair-arm.left{left:-9px}.chair-arm.right{right:-9px}
+  .footnote { font-size: 8px; }
+}
+@media (max-width:360px) {
+  .crew-member svg, .crew-member:nth-child(-n+5) svg { height: 69px; }
+  .crew-name { padding-inline: 5px; font-size: 8px; }
+  .connection-state { max-width: 90px; text-align: right; }
+  .command { gap: 3px; font-size: 8px; }.command>span:first-child{font-size:15px}
+}
+/* Override every decorative timeline, including SVG props and future additions. */
+.motion-paused *, .motion-paused *:before, .motion-paused *:after { animation-play-state: paused !important; }
+@media (prefers-reduced-motion:reduce) { *, *:before, *:after { animation:none !important; transition:none !important; } }
+
+/* Owner links, right side of the footer where the old note sat. */
+.social-links { display: inline-flex; gap: 14px; }
+.social-links a { color: inherit; font-weight: 700; text-decoration: none; border-bottom: 1px solid currentColor; }
+.social-links a:hover { opacity: .75; }

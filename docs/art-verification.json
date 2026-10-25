@@ -1,0 +1,49 @@
+{
+  "browser": "153.0.8010.0",
+  "layouts": [
+    {
+      "viewport": "1440×1050",
+      "crew": 9,
+      "horizontalOverflow": false,
+      "commandsInInitialViewport": true
+    },
+    {
+      "viewport": "1024×768",
+      "crew": 9,
+      "horizontalOverflow": false,
+      "commandsInInitialViewport": false
+    },
+    {
+      "viewport": "768×1024",
+      "crew": 9,
+      "horizontalOverflow": false,
+      "commandsInInitialViewport": true
+    },
+    {
+      "viewport": "390×844",
+      "crew": 9,
+      "horizontalOverflow": false,
+      "commandsInInitialViewport": true
+    },
+    {
+      "viewport": "360×800",
+      "crew": 9,
+      "horizontalOverflow": false,
+      "commandsInInitialViewport": true
+    },
+    {
+      "viewport": "320×568",
+      "crew": 9,
+      "horizontalOverflow": false,
+      "commandsInInitialViewport": false
+    }
+  ],
+  "checks": [
+    "Roster IDs match; all decorative animations run and pause.",
+    "All crew keyboard dialogs, unknown status, Escape/focus restoration; 3 commands preserve input; validation, copy/fallback and install help pass.",
+    "Reduced motion: zero animations, including after Resume.",
+    "Localhost offline reload: cached artwork, all roster members and commands work. Physical installation and production HTTPS not tested.",
+    "10-member active/idle fixture: every member rendered, including future-ID fallback artwork.",
+    "Zero JavaScript page errors and HTTP 4xx/5xx responses."
+  ]
+}

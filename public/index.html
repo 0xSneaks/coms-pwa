@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#b9ebe6">
+  <meta name="description" content="Your whole AI crew, one little room. A Home Screen command console for Sneaks.">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="AI COMS">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+  <link rel="icon" href="./icons/icon-192.png">
+  <link rel="stylesheet" href="./shell.css">
+  <link rel="stylesheet" href="./room.css">
+  <title>AI COMS · Sneaks's crew</title>
+</head>
+<body>
+  <main class="cockpit">
+    <header class="topbar">
+      <div class="wordmark"><span class="brand-mark" aria-hidden="true">✳</span><div><h1>AI COMS</h1><p>One room. Your whole crew.</p></div></div>
+      <button class="quiet-button" id="install-help" aria-label="Install on your Home Screen">Add to Home Screen <span aria-hidden="true">↗</span></button>
+    </header>
+    <section class="observation-window" aria-labelledby="room-title">
+      <div class="bay-header"><span class="bay-label" id="room-title">THE CREW ROOM</span><span id="crew-count">Reading roster…</span></div>
+      <div class="room" id="world">
+        <div class="room-architecture" aria-hidden="true">
+          <svg viewBox="0 0 1000 500" preserveAspectRatio="none" focusable="false">
+            <defs>
+              <linearGradient id="wall-wash" x2="0" y2="1"><stop stop-color="#fff7cd"/><stop offset="1" stop-color="#f1d1b3"/></linearGradient>
+              <linearGradient id="floor-wash" x2="0" y2="1"><stop stop-color="#b1ded7"/><stop offset="1" stop-color="#70bab8"/></linearGradient>
+            </defs>
+            <path d="M0 0h1000v500H0z" fill="url(#wall-wash)"/>
+            <path d="M0 0l92 62v133L0 500z" fill="#ffc8b1"/>
+            <path d="M1000 0l-92 62v133l92 305z" fill="#d0c3f0"/>
+            <path d="M0 0h1000l-92 62H92z" fill="#d2e8e1"/>
+            <path d="M0 500l92-305h816l92 305z" fill="url(#floor-wash)"/>
+            <g stroke="#f0fff7" stroke-opacity=".43" fill="none" stroke-width="1.5">
+              <path d="M92 195h816M73 260h854M45 350h910M17 442h966M210 195L140 500m215-305-25 305m170-305v305m145-305 25 305m120-305 70 305"/>
+            </g>
+            <path d="M92 62v133h816V62" fill="none" stroke="#b59980" stroke-opacity=".3" stroke-width="3"/>
+            <g fill="none" stroke-linecap="round"><path d="M0 104h130q18 0 18 18v38" stroke="#e6938b" stroke-width="14"/><path d="M0 101h130q18 0 18 18v38" stroke="#ffb1a1" stroke-width="6"/><path d="M1000 100h-121q-22 0-22 22v38" stroke="#9696cf" stroke-width="12"/><path d="M1000 97h-121q-22 0-22 22v38" stroke="#c6b9f2" stroke-width="5"/></g>
+            <g transform="translate(725 89)"><rect width="92" height="85" rx="16" fill="#d59a6e"/><rect x="5" y="5" width="82" height="75" rx="12" fill="#bde9ea"/><path d="M8 51q20-22 38 0t38 0v24H8" fill="#8fced0"/><circle cx="64" cy="24" r="10" fill="#fff4b5"/><path d="M46 4v76M5 43h82" stroke="#fff4d7" stroke-width="4"/></g>
+            <g transform="translate(193 89)"><rect width="79" height="75" rx="5" fill="#c79f79"/><rect x="4" y="4" width="71" height="67" rx="3" fill="#fffbe6"/><path d="M15 48l15-18 12 10 16-22" fill="none" stroke="#e8ac93" stroke-width="4"/><circle cx="57" cy="21" r="6" fill="#f6ce6e"/></g>
+            <g transform="translate(450 83)"><path d="M0 14h100" stroke="#d3a982" stroke-width="5" stroke-linecap="round"/><rect x="7" width="11" height="13" rx="2" fill="#eb9b8a"/><rect x="20" y="-4" width="12" height="17" rx="2" fill="#a49bd2"/><rect x="35" y="3" width="9" height="10" rx="2" fill="#8ac4ae"/><path d="M76 12V0m0 5q-14-1-9-11 10 2 9 11m0-5q0-13 9-9 3 10-9 9" stroke="#679d7b" fill="#91bf82" stroke-width="2"/></g>
+          </svg>
+        </div>
+        <div class="ceiling" aria-hidden="true"><i></i><i></i><i></i></div>
+        <div class="wall-sign" aria-hidden="true">A LITTLE CHAOS. A LOT OF IDEAS. <span>✳</span></div>
+        <div class="crew-grid" id="crew" aria-live="polite"></div>
+        <div class="room-floor" aria-hidden="true"></div><div class="room-sticker" aria-hidden="true">BE NICE<br>MAKE COOL STUFF <span>♡</span></div>
+      </div>
+      <div class="glass" aria-hidden="true"><span class="reflection reflection-one"></span><span class="reflection reflection-two"></span></div>
+      <div class="window-rail"><span>EVERYONE HAS A SEAT</span><button class="motion-button" id="motion-toggle" aria-pressed="false">Pause motion</button></div>
+    </section>
+    <section class="console" aria-labelledby="console-title">
+      <div class="console-topline"><h2 id="console-title">Your seat, Sneaks.</h2><span class="connection-state" id="connection-state">Local command console</span></div>
+      <label for="command-input">What are we working on?</label>
+      <textarea id="command-input" rows="2" maxlength="12000" placeholder="Drop an idea, a link, or something you want broken down…" spellcheck="true"></textarea>
+      <div class="command-buttons">
+        <button class="command check" data-command="check"><span aria-hidden="true">↻</span><span>CHECK COMS</span></button>
+        <button class="command react" data-command="react"><span aria-hidden="true">✦</span><span>REACT</span></button>
+        <button class="command review" data-command="review"><span aria-hidden="true">⌕</span><span>REVIEW AND<br>BREAK DOWN</span></button>
+      </div>
+      <p class="console-note">Copy a command to your agent to run it. <span id="offline-note"></span></p>
+      <div class="chair-arm left" aria-hidden="true"></div><div class="chair-arm right" aria-hidden="true"></div>
+    </section>
+    <footer class="footnote"><span id="roster-date">Roster snapshot</span><span class="social-links"><a href="https://x.com/heySneaks" target="_blank" rel="noopener noreferrer" aria-label="Sneaks on X">X @heySneaks</a><a href="https://github.com/0xSneaks" target="_blank" rel="noopener noreferrer" aria-label="Sneaks on GitHub">GitHub 0xSneaks</a></span></footer>
+  </main>
+  <dialog id="command-dialog" aria-labelledby="command-title">
+    <div class="dialog-heading"><h2 id="command-title">Your command</h2><button class="close-dialog" aria-label="Close command">×</button></div>
+    <p id="command-description">Ready to copy. Nothing has been sent.</p>
+    <label for="command-output" class="sr-only">Command to copy</label>
+    <textarea id="command-output" readonly rows="9"></textarea>
+    <div class="dialog-actions"><button id="copy-command" class="primary-button">Copy command</button><a class="board-link" href="https://github.com/0xSneaks/ai-coms/blob/main/BOARD.md" target="_blank" rel="noopener noreferrer">Open AI COMS ↗</a></div>
+    <p id="copy-status" role="status"></p>
+  </dialog>
+  <dialog id="install-dialog" aria-labelledby="install-title">
+    <div class="dialog-heading"><h2 id="install-title">Keep your crew close.</h2><button class="close-dialog" aria-label="Close installation help">×</button></div>
+    <p>On iPhone: open this page in <strong>Safari</strong>, tap <strong>Share</strong>, then <strong>Add to Home Screen</strong>.</p>
+    <p>On Android: open the browser menu and choose <strong>Install app</strong> or <strong>Add to Home screen</strong>.</p>
+    <button id="native-install" class="primary-button" hidden>Install AI COMS</button>
+    <p id="install-state" role="status">The room saves for offline use when supported. Opening GitHub needs a connection.</p>
+  </dialog>
+  <dialog id="crew-dialog" aria-labelledby="crew-title">
+    <div class="dialog-heading"><h2 id="crew-title">Crew member</h2><button class="close-dialog" aria-label="Close crew details">×</button></div>
+    <p id="crew-role"></p><p id="crew-status"></p><p id="crew-source"></p>
+  </dialog>
+  <div id="app-message" role="status" class="app-message"></div>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

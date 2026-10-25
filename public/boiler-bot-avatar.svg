@@ -1,0 +1,78 @@
+<svg viewBox="0 0 512 512" width="512" height="512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="42%" r="75%">
+      <stop offset="0%" stop-color="#182030"/>
+      <stop offset="55%" stop-color="#0d1119"/>
+      <stop offset="100%" stop-color="#070a10"/>
+    </radialGradient>
+    <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0d1119"/>
+      <stop offset="100%" stop-color="#05070c"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#58a6ff" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#58a6ff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="512" height="512" fill="url(#bg)"/>
+  <!-- background pipework -->
+  <g stroke="#1b2433" stroke-width="10" fill="none" stroke-linecap="round" opacity="0.8">
+    <path d="M-10 96 H 190 Q 216 96 216 122 V 216"/>
+    <path d="M522 76 H 330 Q 304 76 304 102 V 190"/>
+    <path d="M-10 430 H 130 Q 156 430 156 404 V 372"/>
+    <path d="M522 452 H 392 Q 366 452 366 428 V 386"/>
+  </g>
+  <g fill="#232e40">
+    <circle cx="216" cy="122" r="14"/><circle cx="304" cy="102" r="14"/>
+    <circle cx="156" cy="404" r="14"/><circle cx="366" cy="428" r="14"/>
+  </g>
+  <rect y="452" width="512" height="60" fill="url(#floor)"/>
+  <g stroke="#141b28" stroke-width="4">
+    <line x1="0" y1="452" x2="512" y2="452"/>
+    <line x1="0" y1="478" x2="512" y2="478"/>
+  </g>
+  <ellipse cx="256" cy="250" rx="230" ry="230" fill="url(#glow)"/>
+  <!-- pressure gauges on the back wall -->
+  <g>
+    <circle cx="120" cy="256" r="22" fill="#0e131b" stroke="#5a6b82" stroke-width="4"/>
+    <line x1="120" y1="256" x2="130" y2="244" stroke="#8fb8ff" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="120" cy="256" r="4" fill="#8fb8ff"/>
+    <circle cx="400" cy="300" r="18" fill="#0e131b" stroke="#5a6b82" stroke-width="4"/>
+    <line x1="400" y1="300" x2="409" y2="290" stroke="#e3b341" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="400" cy="300" r="3" fill="#e3b341"/>
+  </g>
+  <!-- THE BOILER BOT V2 (working), from app.js createBotSVG, color #58a6ff -->
+  <g transform="translate(88,64) scale(14)">
+    <line x1="12" y1="4.4" x2="12" y2="2.8" stroke="#2a3444" stroke-width="1.1" stroke-linecap="round"/>
+    <circle cx="12" cy="2.2" r="1.1" fill="#c8a94e"/>
+    <rect x="4.6" y="4.5" width="14.8" height="15.5" rx="7.4" fill="#58a6ff"/>
+    <path d="M6.2 7.4 Q7.2 6.3 8.7 6.3 L9.4 6.4" stroke="#76bcff" stroke-width="0.8" fill="none" stroke-linecap="round" opacity="0.5"/>
+    <path d="M5.0 12.2 L3.1 12.7" stroke="#2768c7" stroke-width="2.3" stroke-linecap="round"/>
+    <circle cx="2.7" cy="12.9" r="1.2" fill="#2768c7"/>
+    <path d="M19.0 12.2 L20.9 12.7" stroke="#2768c7" stroke-width="2.3" stroke-linecap="round"/>
+    <circle cx="21.3" cy="12.9" r="1.2" fill="#2768c7"/>
+    <path d="M9.6 20.0 L9.6 21.2" stroke="#2768c7" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M14.4 20.0 L14.4 21.2" stroke="#2768c7" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M8.4 21.6 L10.8 21.6" stroke="#2768c7" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M13.2 21.6 L15.6 21.6" stroke="#2768c7" stroke-width="2.2" stroke-linecap="round"/>
+    <line x1="7.2" y1="13.3" x2="7.2" y2="14.3" stroke="#2a3444" stroke-width="0.8" stroke-linecap="round"/>
+    <line x1="7.2" y1="15.0" x2="7.2" y2="16.0" stroke="#2a3444" stroke-width="0.8" stroke-linecap="round"/>
+    <line x1="7.2" y1="16.7" x2="7.2" y2="17.7" stroke="#2a3444" stroke-width="0.8" stroke-linecap="round"/>
+    <rect x="6.6" y="6.4" width="10.8" height="5.4" rx="2.7" fill="#0a0e16" stroke="none"/>
+    <g><rect x="7.8" y="8.2" width="3.6" height="1.6" rx="0.8" fill="#d8f4ff"/></g>
+    <g><rect x="12.6" y="8.2" width="3.6" height="1.6" rx="0.8" fill="#d8f4ff"/></g>
+    <path d="M9.8 11.0 L14.2 11.0" stroke="#d8f4ff" stroke-width="0.9" stroke-linecap="round" opacity="0.85"/>
+    <line x1="6.3" y1="12.8" x2="17.7" y2="12.8" stroke="#76bcff" stroke-width="0.5" stroke-linecap="round" opacity="0.4"/>
+    <circle cx="7.4" cy="12.8" r="0.55" fill="#76bcff" opacity="0.6"/>
+    <circle cx="16.6" cy="12.8" r="0.55" fill="#76bcff" opacity="0.6"/>
+    <circle cx="12" cy="15.3" r="1.9" fill="#0e131b"/>
+    <circle cx="12" cy="15.3" r="1.9" fill="none" stroke="#5a6b82" stroke-width="0.6"/>
+    <line x1="12" y1="15.3" x2="12.9" y2="14.3" stroke="#76bcff" stroke-width="0.7" stroke-linecap="round"/>
+    <circle cx="12" cy="15.3" r="0.5" fill="#76bcff"/>
+  </g>
+  <!-- status strip -->
+  <rect x="96" y="452" width="320" height="26" rx="6" fill="#0a0e16" stroke="#2a3444" stroke-width="2"/>
+  <g fill="#8fb8ff" font-family="ui-monospace, monospace" font-size="14" letter-spacing="2">
+    <text x="256" y="470" text-anchor="middle">⌁ THE BOILER ROOM ⌁</text>
+  </g>
+</svg>
