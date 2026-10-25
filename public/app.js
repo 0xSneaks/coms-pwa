@@ -1,8 +1,10 @@
 import { composeCommand } from './commands.js';
+import { MAX_SEND, sendOrder } from './send.js';
 
 const $ = (selector) => document.querySelector(selector);
 const crew = $('#crew');
 let installPrompt;
+let current = { kind: 'check', text: '' };
 let lastFocus;
 function showDialog(id) {
   lastFocus = document.activeElement;
@@ -109,6 +111,10 @@ document.querySelectorAll('[data-command]').forEach((button) => {
   button.addEventListener('click', () => {
     try {
       $('#command-output').value = composeCommand(button.dataset.command, $('#command-input').value);
+      current = { kind: button.dataset.command, text: $('#command-input').value.trim() };
+      $('#send-status').textContent = current.text.length > MAX_SEND
+        ? `Send takes up to ${MAX_SEND.toLocaleString()} characters; Copy works for this one.` : '';
+      $('#send-command').disabled = !navigator.onLine;
       $('#command-title').textContent = {check:'CHECK COMS',react:'REACT',review:'REVIEW AND BREAK DOWN'}[button.dataset.command];
       $('#copy-status').textContent = '';
       message('');
@@ -123,6 +129,29 @@ $('#copy-command').addEventListener('click', async () => {
   } catch {
     $('#command-output').focus(); $('#command-output').select();
     $('#copy-status').textContent = 'Copy permission is unavailable. The command is selected; use Copy.';
+  }
+});
+
+$('#send-command').addEventListener('click', async () => {
+  const button = $('#send-command');
+  const status = $('#send-status');
+  button.disabled = true;
+  status.textContent = 'Waiting for Face ID…';
+  try {
+    const r = await sendOrder(current);
+    status.replaceChildren(document.createTextNode(r.boardUpdated
+      ? `Sent to the crew${r.repaired ? ' (board line added on retry)' : ''}. It is in every agent's inbox. `
+      : `Saved as ${r.orderPath || 'an order file'}, but NOT on the board yet, so agents won't see it. Don't tap Send again (that makes a second order); ask an agent to add the board line. `));
+    const link = r.commitUrl || r.orderUrl;
+    if (link && link.startsWith('https://github.com/')) {
+      const a = document.createElement('a');
+      a.href = link; a.target = '_blank'; a.rel = 'noopener noreferrer'; a.textContent = 'View on GitHub ↗';
+      status.append(a);
+    }
+  } catch (error) {
+    status.textContent = error.message;
+  } finally {
+    button.disabled = !navigator.onLine;
   }
 });
 
