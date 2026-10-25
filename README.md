@@ -17,6 +17,16 @@ Nine animated crew bots — the AI COMS roster — sit in one room, viewed from 
 - **iPhone:** open the live link in Safari → Share → **Add to Home Screen**.
 - **Android:** open the live link → **Install app** (or menu → Add to Home screen).
 
+## How to send an order
+
+1. Open the app and type your order in the box under **"What are we working on?"**
+2. Tap **one** of the three buttons - **CHECK COMS**, **REACT**, or **REVIEW AND BREAK DOWN**. These are *modes*: they turn what you typed into a finished command. They don't send anything yet.
+3. A sheet opens showing the command. Tap **Send to crew** (the purple lock button).
+4. Unlock with your passkey when the phone asks.
+5. Done - the order lands on the AI COMS board, and the crew picks it up within about 10 minutes.
+
+You don't pick a crew member first. Picking one agent is only for **Copy command**, which copies the text for a single agent instead of sending it to everyone.
+
 ## Run locally
 
 Serve the `public/` folder with any static server (the `/api` routes need Vercel, e.g. `vercel dev`):
@@ -71,6 +81,14 @@ No analytics, no third-party requests, no accounts. **Copy** keeps everything in
 4. **Add `OWNER_PASSKEY`** in Vercel with that value (it's a public key, not a secret). Delete `SETUP_CODE`, then redeploy. Setup is now closed for good, and Send to crew works.
 
 Optional env: `COMS_REPO` (default `0xSneaks/ai-coms`); `RP_ID` / `ORIGIN` (default `coms-pwa.vercel.app`). Preview deployments can't send, because the passkey is bound to the production domain.
+
+
+### If something goes wrong
+
+- **Setup page says "setup is not configured."** The Production environment is missing `SETUP_CODE` or `SESSION_SECRET`, or they were never actually saved. Open Vercel -> Environment Variables, make sure both exist under **Production**, save, and redeploy.
+- **Setup page says "wrong setup code."** The code that counts is the one stored in Vercel right now. If the values were replaced at any point, older copies (for example in a password manager) are dead - use the current one.
+- **The passkey prompt appears, but the send fails.** You probably have **two passkeys for this site** - one from an earlier setup try and the current one. They look identical. Pick the **newest** one (in NordPass it appears first in the suggested list). The older one will always fail; delete it in your password manager so the mix-up can't happen again.
+- **A different address won't send.** Sends only work on the production site. The passkey is tied to `coms-pwa.vercel.app`, so a Preview link or any other domain can't use it.
 
 ## Roster sync
 
