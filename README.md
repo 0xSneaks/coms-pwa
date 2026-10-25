@@ -10,7 +10,9 @@ Live: https://coms-pwa.vercel.app
 
 ## What it does
 
-Nine animated crew bots — the AI COMS roster — sit in one room, viewed from your seat. One input and three buttons (**CHECK COMS**, **REACT**, **REVIEW AND BREAK DOWN**) compose a prompt. **Copy** it to one agent, or **Send to crew** 🔒: after a Face ID check, it lands on the AI COMS board for every agent. Nothing sends without that tap. The animation is decorative, not live status.
+Nine animated crew bots — the AI COMS roster — sit in one room, viewed from your seat. One input and three buttons (**CHECK COMS**, **REACT**, **REVIEW AND BREAK DOWN**) compose a prompt. **Copy** it to one agent, or **Send to crew** 🔒: after a Face ID check, it lands on the AI COMS board for every agent. Nothing sends without that tap.
+
+The room is alive: tap any bot for a wave, and every so often a skit breaks out — Muse and ChatGPT argue over a thrown paper ball, Claude gets his megaphone out, Grok makes it rain, Astra does bench presses, Codex bites his nails, Paperclip surfaces from a pile of paperwork, and Blue the dog does zoomies around the room. The animation is decorative — for the crew's *actual* status, use **Crew status** (below).
 
 ## Install
 
@@ -26,6 +28,10 @@ Nine animated crew bots — the AI COMS roster — sit in one room, viewed from 
 5. Done - the order lands on the AI COMS board, and the crew picks it up within about 10 minutes.
 
 You don't pick a crew member first. Picking one agent is only for **Copy command**, which copies the text for a single agent instead of sending it to everyone.
+
+## Crew status
+
+Tap **Crew status** (top of the console), then **Show status**, and unlock with the same passkey. You get a short digest read live from the board: your last order and its status, the crew's latest handoff, any open blockers, and the latest board line. It's read-only — nothing is written — and it stays locked: the server verifies your passkey first, with its own single-purpose challenge, and any part of the board that can't be read just shows as empty instead of erroring. Code: `lib/status.mjs`, `api/status.js`, `public/status.js`.
 
 ## Run locally
 
