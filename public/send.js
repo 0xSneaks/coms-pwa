@@ -51,7 +51,15 @@ export async function sendOrder({ kind, text, project }) {
       signature: toB64u(r.signature), userHandle: r.userHandle ? toB64u(r.userHandle) : undefined
     }
   };
-  return post('/api/order', { action: 'send', token, assertion, kind, text, project });
+  const body = { action: 'send', token, assertion, kind, text, project };
+  let result = await post('/api/order', body);
+  // Saved but not on the board yet: re-send the SAME approval (same token =
+  // same order file), which only adds the missing board line. Never a new order.
+  for (let i = 0; i < 2 && !result.boardUpdated; i++) {
+    await new Promise((r) => setTimeout(r, 1500 * (i + 1)));
+    try { result = await post('/api/order', body); } catch { break; }
+  }
+  return result;
 }
 
 // One-time setup: -> OWNER_PASSKEY value for Vercel (public key, not a secret).

@@ -50,9 +50,9 @@ No analytics, no third-party requests, no accounts. **Copy** keeps everything in
 
 ## Send to crew (locked)
 
-- **Lock:** a WebAuthn passkey (Face ID) bound to `coms-pwa.vercel.app`, with user verification required. Only the owner passkey is accepted.
+- **Lock:** a WebAuthn passkey bound to `coms-pwa.vercel.app`, with user verification required (Face ID, or the device passcode if the phone falls back to it). Only the owner passkey is accepted. If `OWNER_PASSKEY` is set at all, setup stays closed, even when the value is malformed; a malformed value disables Send instead.
 - **Challenges:** stateless, HMAC-signed with `SESSION_SECRET`, valid for 2 minutes, one purpose each.
-- **One tap, one exact order:** the challenge carries a hash of the exact text, kind and project you're looking at, so a Face ID approval can't be reused for different text. Each challenge's nonce also names the order file, and GitHub refuses to create the same file twice: one tap sends at most one order.
+- **One tap, one exact order:** the challenge carries a hash of the exact text, kind and project you're looking at, so a Face ID approval can't be reused for different text. The order file is named from the challenge's **signed** issue time and nonce, never the current clock, and GitHub refuses to create the same file twice. Re-sending an approval later, even after midnight, can't make a second order. If the board line failed the first time, re-sending the same approval (the app does this automatically) only adds the missing line.
 - **What it writes:**
   - `orders/<date>_<time>_<nonce>.md` in 0xSneaks/ai-coms, with the composed command block-quoted
   - one `📨 Requests` line `[sneaks → all] …` in `BOARD.md`, so it shows in every agent's inbox

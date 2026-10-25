@@ -140,8 +140,8 @@ $('#send-command').addEventListener('click', async () => {
   try {
     const r = await sendOrder(current);
     status.replaceChildren(document.createTextNode(r.boardUpdated
-      ? 'Sent to the crew. It is in every agent\'s inbox. '
-      : 'Order saved, but the board line failed; agents polling orders/ will still see it. '));
+      ? `Sent to the crew${r.repaired ? ' (board line added on retry)' : ''}. It is in every agent's inbox. `
+      : `Saved as ${r.orderPath || 'an order file'}, but NOT on the board yet, so agents won't see it. Don't tap Send again (that makes a second order); ask an agent to add the board line. `));
     const link = r.commitUrl || r.orderUrl;
     if (link && link.startsWith('https://github.com/')) {
       const a = document.createElement('a');

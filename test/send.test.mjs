@@ -39,11 +39,11 @@ const post = (path, body, headers = {}) => new Request(`${ORIGIN}${path}`, {
 const read = async (res) => ({ status: res.status, body: await res.json() });
 const allow = () => true;
 
-function setup({ board = BOARD, boardConflicts = 0 } = {}) {
+function setup({ board = BOARD, boardConflicts = 0, boardFail = 0, now = NOW } = {}) {
   const auth = makeAuthenticator();
-  const gh = fakeGitHub({ board, boardConflicts });
+  const gh = fakeGitHub({ board, boardConflicts, boardFail });
   const env = { SESSION_SECRET: SECRET, GITHUB_TOKEN: GH_TOKEN, OWNER_PASSKEY: auth.ownerPasskey() };
-  const deps = { fetch: gh.fetchImpl, now: NOW, limitChallenge: allow, limitSend: allow };
+  const deps = { fetch: gh.fetchImpl, now, limitChallenge: allow, limitSend: allow };
   const order = (body, d = deps) => handleOrder(post('/api/order', body), env, d).then(read);
   return { auth, gh, env, deps, order };
 }
@@ -117,6 +117,57 @@ test('replayed assertion cannot send twice', async () => {
   assert.equal(again.status, 409);
   assert.match(again.body.error, /already sent/);
   assert.equal([...gh.files.keys()].filter((k) => k.startsWith('orders/')).length, 1);
+});
+
+test('replay later (+65 s, and across midnight) still hits the same order: one order, one line', async () => {
+  for (const start of [NOW, Date.parse('2026-10-26T03:59:30Z')]) { // 01:30 ET; 23:59:30 ET
+    const { auth, gh, order, deps } = setup({ now: start });
+    const c = await challenge(order);
+    const body = { action: 'send', token: c.token, assertion: auth.assert(c.options.challenge), kind: 'check' };
+    assert.equal((await order(body)).status, 200);
+    const later = await order(body, { ...deps, now: start + 65_000 }); // next minute (and next day for 23:59:30)
+    assert.equal(later.status, 409, new Date(start).toISOString());
+    assert.equal([...gh.files.keys()].filter((k) => k.startsWith('orders/')).length, 1);
+    assert.equal(gh.files.get('BOARD.md').text.split('[sneaks → all]').length - 1, 1);
+  }
+});
+
+test('partial send (board write failed) is repaired by re-sending the same approval, never duplicated', async () => {
+  const { auth, gh, order } = setup({ boardFail: 1 });
+  const input = { kind: 'react', text: 'x' };
+  const c = await challenge(order, input);
+  const body = { action: 'send', token: c.token, assertion: auth.assert(c.options.challenge), ...input };
+  const first = await order(body);
+  assert.equal(first.status, 200);
+  assert.equal(first.body.boardUpdated, false);
+  assert.ok(!gh.files.get('BOARD.md').text.includes('[sneaks → all]'));
+  const retry = await order(body);
+  assert.equal(retry.status, 200);
+  assert.deepEqual([retry.body.boardUpdated, retry.body.repaired], [true, true]);
+  const third = await order(body);
+  assert.equal(third.status, 409);
+  assert.equal(gh.files.get('BOARD.md').text.split('[sneaks → all]').length - 1, 1);
+  assert.equal([...gh.files.keys()].filter((k) => k.startsWith('orders/')).length, 1);
+});
+
+test('setup stays closed when OWNER_PASSKEY is set but malformed; Send is 503', async () => {
+  const env = { SESSION_SECRET: SECRET, SETUP_CODE: 'still-here', OWNER_PASSKEY: '{"oops": true' };
+  const r = await read(await handleRegister(post('/api/passkey/register', { action: 'options', setupCode: 'still-here' }), env, { now: NOW, limit: allow }));
+  assert.equal(r.status, 403);
+  for (const bad of ['{"oops": true', 'not json', '{"id": 5}', '  {}  ']) {
+    const s = await read(await handleOrder(post('/api/order', { action: 'challenge', kind: 'check' }),
+      { SESSION_SECRET: SECRET, GITHUB_TOKEN: GH_TOKEN, OWNER_PASSKEY: bad }, {}));
+    assert.equal(s.status, 503, bad);
+    const reg = await read(await handleRegister(post('/api/passkey/register', { action: 'options', setupCode: 'still-here' }),
+      { ...env, OWNER_PASSKEY: bad }, { now: NOW, limit: allow }));
+    assert.equal(reg.status, 403, bad);
+  }
+});
+
+test('oversized body refused from Content-Length before reading', async () => {
+  const { env, deps } = setup();
+  const req = post('/api/order', { action: 'challenge', kind: 'check' }, { 'Content-Length': '999999' });
+  assert.equal((await read(await handleOrder(req, env, deps))).status, 413);
 });
 
 test('forged, wrong-challenge, no-Face-ID, wrong-origin and wrong-RP assertions are refused', async () => {

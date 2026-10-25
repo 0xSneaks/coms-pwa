@@ -48,11 +48,12 @@ export function makeAuthenticator({ rpID = 'coms-pwa.vercel.app', origin = `http
 // In-memory GitHub contents API: create-only semantics without sha, sha
 // check with it. Records every call. `boardConflicts` makes the next N
 // BOARD.md updates fail with 409 (another agent pushed first).
-export function fakeGitHub({ board, boardConflicts = 0 } = {}) {
+export function fakeGitHub({ board, boardConflicts = 0, boardFail = 0 } = {}) {
   const files = new Map([['BOARD.md', { text: board, sha: 'sha0' }]]);
   const calls = [];
   let shaN = 0;
   let conflicts = boardConflicts;
+  let fails = boardFail;
   const reply = (status, body) => new Response(JSON.stringify(body), { status });
   const fetchImpl = async (url, init) => {
     const { pathname } = new URL(url);
@@ -68,6 +69,7 @@ export function fakeGitHub({ board, boardConflicts = 0 } = {}) {
       if (!body.sha) {
         if (cur) return reply(422, { message: 'sha wasn\'t supplied' });
       } else {
+        if (path === 'BOARD.md' && fails > 0) { fails -= 1; return reply(500, {}); }
         if (path === 'BOARD.md' && conflicts > 0) { conflicts -= 1; files.set(path, { text: cur.text + '\n<!-- other agent -->\n', sha: `other${conflicts}` }); return reply(409, {}); }
         if (!cur || cur.sha !== body.sha) return reply(409, {});
       }
@@ -77,5 +79,5 @@ export function fakeGitHub({ board, boardConflicts = 0 } = {}) {
     }
     return reply(405, {});
   };
-  return { fetchImpl, files, calls };
+  return { fetchImpl, files, calls, failBoard: (n) => { fails = n; } };
 }
