@@ -54,7 +54,7 @@
       <div class="window-rail"><span>EVERYONE HAS A SEAT</span><button class="motion-button" id="motion-toggle" aria-pressed="false">Pause motion</button></div>
     </section>
     <section class="console" aria-labelledby="console-title">
-      <div class="console-topline"><h2 id="console-title">Your seat, Sneaks.</h2><span class="connection-state" id="connection-state">Local command console</span></div>
+      <div class="console-topline"><h2 id="console-title">Your seat, Sneaks.</h2><span class="connection-state" id="connection-state">Local command console</span><button class="quiet-button" id="status-open">Crew status</button></div>
       <label for="command-input">What are we working on?</label>
       <textarea id="command-input" rows="2" maxlength="12000" placeholder="Drop an idea, a link, or something you want broken down…" spellcheck="true"></textarea>
       <div class="command-buttons">
@@ -87,7 +87,14 @@
     <div class="dialog-heading"><h2 id="crew-title">Crew member</h2><button class="close-dialog" aria-label="Close crew details">×</button></div>
     <p id="crew-role"></p><p id="crew-status"></p><p id="crew-source"></p>
   </dialog>
+  <dialog id="status-dialog" aria-labelledby="status-title">
+    <div class="dialog-heading"><h2 id="status-title">Crew status</h2><button class="close-dialog" aria-label="Close crew status">×</button></div>
+    <p id="status-body">Locked. Show the crew's current status with Face ID.</p>
+    <div class="dialog-actions"><button id="status-show" class="primary-button"><span aria-hidden="true">🔒</span> Show status</button></div>
+    <p id="status-error" role="status"></p>
+  </dialog>
   <div id="app-message" role="status" class="app-message"></div>
   <script type="module" src="./app.js"></script>
+  <script type="module" src="./status.js"></script>
 </body>
 </html>
