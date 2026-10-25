@@ -190,3 +190,464 @@ if ('serviceWorker' in navigator) {
   $('#offline-note').textContent = 'Offline saving is unavailable in this browser.';
 }
 loadCrew();
+
+/* ================= Animation layer =================
+   Decorative only: tap reactions, ambient room life, character skits,
+   a send celebration and typing attention. Every loop checks the shared
+   `paused` flag and document visibility before starting anything, and
+   all matching CSS lives under the same .motion-paused / reduced-motion
+   rules as the rest of the room. Skit overlays are pointer-events:none
+   and aria-hidden; none of this touches the send path. */
+const world = $('#world');
+const rand = (min, max) => min + Math.random() * (max - min);
+const pickOne = (arr) => arr[Math.floor(Math.random() * arr.length)];
+const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const motionOK = () => !paused && !document.hidden;
+const members = () => [...crew.querySelectorAll('.crew-member')];
+const memberById = (id) => members().find((m) => m.dataset.agent === id);
+function relRect(el) {
+  const w = world.getBoundingClientRect();
+  const r = el.getBoundingClientRect();
+  return { x: r.left - w.left, y: r.top - w.top, w: r.width, h: r.height, cx: r.left - w.left + r.width / 2, cy: r.top - w.top + r.height / 2 };
+}
+async function classSkit(member, cls, ms) {
+  if (!member) return;
+  member.classList.add(cls);
+  await wait(ms);
+  member.classList.remove(cls);
+}
+
+/* --- Tap reaction: rides alongside the crew-details dialog, never blocks it --- */
+crew.addEventListener('click', (event) => {
+  const member = event.target.closest('.crew-member');
+  if (!member) return;
+  member.classList.remove('reacting');
+  void member.offsetWidth;
+  member.classList.add('reacting');
+  setTimeout(() => member.classList.remove('reacting'), 950);
+});
+
+/* --- Ambient sparkles --- */
+{
+  const layer = document.createElement('div');
+  layer.className = 'sparkle-layer';
+  layer.setAttribute('aria-hidden', 'true');
+  for (let i = 0; i < 12; i++) {
+    const s = document.createElement('span');
+    const size = rand(3, 6);
+    s.style.left = `${rand(2, 98)}%`;
+    s.style.top = `${rand(6, 64)}%`;
+    s.style.width = `${size}px`;
+    s.style.height = `${size}px`;
+    s.style.animationDuration = `${rand(5, 11)}s`;
+    s.style.animationDelay = `${-rand(0, 8)}s`;
+    if (i % 3 === 0) s.className = 'pale';
+    layer.append(s);
+  }
+  world.append(layer);
+}
+
+/* --- Cross-room paper plane --- */
+const plane = document.createElement('div');
+plane.className = 'room-plane';
+plane.setAttribute('aria-hidden', 'true');
+plane.innerHTML = '<span class="plane-bob"><svg viewBox="0 0 30 18" width="30" height="18" focusable="false"><path d="M1 9L29 1L20 17L16 11Z" fill="#fffbea" stroke="#8c7996" stroke-width="1"/><path d="M16 11L29 1" fill="none" stroke="#8c7996" stroke-width=".7"/></svg></span>';
+world.append(plane);
+plane.addEventListener('animationend', (event) => {
+  if (event.animationName === 'plane-cross') plane.classList.remove('flying');
+});
+(function flyPlane() {
+  setTimeout(() => {
+    if (motionOK()) plane.classList.add('flying');
+    flyPlane();
+  }, rand(24000, 40000));
+  setTimeout(() => { if (motionOK()) plane.classList.add('flying'); }, rand(5000, 9000));
+})();
+
+/* --- Random hello waves --- */
+(function waveLoop() {
+  setTimeout(() => {
+    if (motionOK()) {
+      const awake = members().filter((m) => m.dataset.personality !== 'sleep');
+      if (awake.length) {
+        const m = pickOne(awake);
+        m.classList.add('waving');
+        setTimeout(() => m.classList.remove('waving'), 1650);
+      }
+    }
+    waveLoop();
+  }, rand(16000, 30000));
+})();
+
+/* --- Typing attention --- */
+{
+  const input = $('#command-input');
+  let typeTimer;
+  input.addEventListener('input', () => {
+    document.body.classList.add('typing');
+    clearTimeout(typeTimer);
+    typeTimer = setTimeout(() => document.body.classList.remove('typing'), 1500);
+  });
+  input.addEventListener('blur', () => {
+    clearTimeout(typeTimer);
+    document.body.classList.remove('typing');
+  });
+}
+
+/* --- Send celebration (send.js dispatches 'coms:order-sent' on success) --- */
+window.addEventListener('coms:order-sent', () => {
+  if (!motionOK()) return;
+  members().forEach((m, i) => m.style.setProperty('--hop-delay', `${i * 55}ms`));
+  world.classList.remove('celebrate');
+  void world.offsetWidth;
+  world.classList.add('celebrate');
+  setTimeout(() => world.classList.remove('celebrate'), 1700);
+  const burst = document.createElement('div');
+  burst.className = 'sparkle-burst';
+  burst.setAttribute('aria-hidden', 'true');
+  world.append(burst);
+  for (let i = 0; i < 10; i++) {
+    const s = document.createElement('span');
+    burst.append(s);
+    const angle = (i / 10) * Math.PI * 2 + rand(-.2, .2);
+    const dist = rand(60, 130);
+    const anim = s.animate([
+      { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 },
+      { transform: `translate(calc(-50% + ${Math.cos(angle) * dist}px), calc(-50% + ${Math.sin(angle) * dist - 20}px)) scale(.4)`, opacity: 0 }
+    ], { duration: rand(700, 1100), easing: 'cubic-bezier(.17,.67,.35,1)' });
+    anim.onfinish = () => s.remove();
+  }
+  setTimeout(() => burst.remove(), 1400);
+});
+
+/* --- Skit props: created once per member, shown by CSS during the skit --- */
+const MEGAPHONE_SVG = '<svg viewBox="0 0 48 34" focusable="false"><path d="M16 12L38 5v24L16 22Z" fill="#ffcb65" stroke="#b46a30" stroke-width="1.5"/><rect x="8" y="12" width="8" height="10" rx="2" fill="#e4572e"/><path d="M11 22v6h5v-6" fill="#e4572e"/><path class="mega-arc a1" d="M41 10q5 7 0 14" fill="none" stroke="#e4572e" stroke-width="2" stroke-linecap="round"/><path class="mega-arc a2" d="M44 7q7 10 0 20" fill="none" stroke="#e4572e" stroke-width="2" stroke-linecap="round"/></svg>';
+const LAPTOP_SVG = '<svg viewBox="0 0 56 38" focusable="false"><rect x="9" y="3" width="38" height="26" rx="3" fill="#35506b"/><rect x="12" y="6" width="32" height="20" rx="2" fill="#cfeeff"/><path d="M15 11h14M15 16h20M15 21h10" stroke="#5b87a8" stroke-width="2" stroke-linecap="round"/><path d="M5 33h46l-5-4H10Z" fill="#7b93a8"/></svg>';
+const BARBELL_SVG = '<svg viewBox="0 0 84 26" focusable="false"><rect x="1" y="11" width="82" height="4" rx="2" fill="#5a6b76"/><rect x="9" y="3" width="7" height="20" rx="2.5" fill="#c64751"/><rect x="18" y="6" width="6" height="14" rx="2" fill="#7a3542"/><rect x="68" y="3" width="7" height="20" rx="2.5" fill="#c64751"/><rect x="60" y="6" width="6" height="14" rx="2" fill="#7a3542"/></svg>';
+function ensureProp(member, cls, html) {
+  let el = member.querySelector(`.skit-prop.${cls}`);
+  if (!el) {
+    el = document.createElement('span');
+    el.className = `skit-prop ${cls}`;
+    el.setAttribute('aria-hidden', 'true');
+    if (html) el.innerHTML = html;
+    member.append(el);
+  }
+  return el;
+}
+function ensureSheets(member) {
+  if (member.querySelector('.sheet')) return;
+  for (let i = 1; i <= 4; i++) {
+    const s = document.createElement('span');
+    s.className = `skit-prop sheet sh${i}`;
+    s.setAttribute('aria-hidden', 'true');
+    if (i === 4) {
+      const stamp = document.createElement('span');
+      stamp.className = 'stamp';
+      stamp.textContent = 'FILED';
+      s.append(stamp);
+    }
+    member.append(s);
+  }
+}
+
+/* --- Paper-ball throws (the argument skit) --- */
+function throwBall(fromMember, toMember) {
+  if (!fromMember || !toMember) return;
+  const a = relRect(fromMember);
+  const b = relRect(toMember);
+  const x1 = a.cx + (b.cx > a.cx ? a.w * .3 : -a.w * .3);
+  const y1 = a.y + a.h * .3;
+  const x2 = b.cx;
+  const y2 = b.y + b.h * .32;
+  const ball = document.createElement('span');
+  ball.className = 'paper-ball';
+  ball.setAttribute('aria-hidden', 'true');
+  world.append(ball);
+  const anim = ball.animate([
+    { transform: `translate(${x1}px, ${y1}px) rotate(0deg)`, opacity: 1 },
+    { transform: `translate(${(x1 + x2) / 2}px, ${Math.min(y1, y2) - 48}px) rotate(210deg)`, opacity: 1, offset: .55 },
+    { transform: `translate(${x2}px, ${y2}px) rotate(350deg)`, opacity: 1 },
+    { transform: `translate(${x2}px, ${y2 + 16}px) rotate(380deg)`, opacity: 0 }
+  ], { duration: 720, easing: 'ease-out' });
+  anim.onfinish = () => ball.remove();
+  setTimeout(() => {
+    toMember.classList.add('duck');
+    setTimeout(() => toMember.classList.remove('duck'), 600);
+  }, 600);
+}
+
+/* --- Walkers: a member's SVG clone that can leave its seat --- */
+function makeWalker(member) {
+  const svg = member.querySelector('svg');
+  if (!svg) return null;
+  const seat = relRect(svg);
+  const el = document.createElement('div');
+  el.className = 'room-walker';
+  el.setAttribute('aria-hidden', 'true');
+  el.style.width = `${seat.w}px`;
+  el.style.height = `${seat.h}px`;
+  el.append(svg.cloneNode(true));
+  const anger = document.createElement('span');
+  anger.className = 'anger-mark';
+  anger.textContent = '💢';
+  el.append(anger);
+  el._pos = { x: seat.x, y: seat.y };
+  el.style.transform = `translate(${seat.x}px, ${seat.y}px)`;
+  world.append(el);
+  member.classList.add('seat-empty');
+  return { el, seat: { x: seat.x, y: seat.y }, member };
+}
+function animateWalkerTo(el, p, dur) {
+  const from = { ...el._pos };
+  el._pos = p;
+  const anim = el.animate([
+    { transform: `translate(${from.x}px, ${from.y}px)` },
+    { transform: `translate(${p.x}px, ${p.y}px)` }
+  ], { duration: dur, easing: 'ease-in-out', fill: 'forwards' });
+  return anim.finished.then(() => {
+    el.style.transform = `translate(${p.x}px, ${p.y}px)`;
+    anim.cancel();
+  }).catch(() => { el.style.transform = `translate(${p.x}px, ${p.y}px)`; });
+}
+function frontOf(target, walkerEl) {
+  const w = world.getBoundingClientRect();
+  const t = target.getBoundingClientRect();
+  const ew = walkerEl.offsetWidth;
+  const eh = walkerEl.offsetHeight;
+  return {
+    x: Math.max(4, Math.min(w.width - ew - 4, t.left - w.left + t.width / 2 - ew / 2)),
+    y: Math.max(4, Math.min(w.height - eh - 4, t.top - w.top + t.height - eh + 12))
+  };
+}
+function dustPuffs(pos, width) {
+  for (let i = 0; i < 3; i++) {
+    const d = document.createElement('span');
+    d.className = 'dust-puff';
+    d.setAttribute('aria-hidden', 'true');
+    d.style.left = `${pos.x + width * .3 + i * 10}px`;
+    d.style.top = `${pos.y + 34 + i * 6}px`;
+    world.append(d);
+    const anim = d.animate([
+      { transform: 'scale(.4)', opacity: .7 },
+      { transform: 'scale(1.5) translate(-6px, -4px)', opacity: 0 }
+    ], { duration: 600 + i * 120, easing: 'ease-out' });
+    anim.onfinish = () => d.remove();
+  }
+}
+
+/* ================= Character skits ================= */
+/* (a) ARGUMENT — Muse throws a paper ball at ChatGPT; sometimes he throws back */
+async function skitArgue() {
+  const muse = memberById('muse');
+  const gpt = memberById('chatgpt');
+  if (!muse || !gpt) return;
+  muse.classList.add('skit-argue');
+  gpt.classList.add('skit-argue');
+  await wait(500);
+  throwBall(muse, gpt);
+  if (Math.random() < .3) {
+    await wait(950);
+    throwBall(gpt, muse);
+  }
+  await wait(1500);
+  muse.classList.remove('skit-argue');
+  gpt.classList.remove('skit-argue');
+}
+/* (b) MEGAPHONE — Claude makes an announcement */
+async function skitMegaphone() {
+  const claude = memberById('claude');
+  if (!claude) return;
+  ensureProp(claude, 'megaphone', MEGAPHONE_SVG);
+  await classSkit(claude, 'skit-announce', 2200);
+}
+/* (c) LAPTOP — Claude Code settles in behind his laptop */
+async function skitLaptop() {
+  const cc = memberById('claude-code');
+  if (!cc) return;
+  ensureProp(cc, 'laptop', LAPTOP_SVG);
+  await classSkit(cc, 'skit-working', 4000);
+}
+/* (d) MAKE IT RAIN — Grok, gleefully */
+async function skitRain() {
+  const grok = memberById('grok');
+  if (!grok) return;
+  const r = relRect(grok);
+  const n = 10 + Math.floor(Math.random() * 5);
+  for (let i = 0; i < n; i++) {
+    const bill = document.createElement('span');
+    bill.className = 'rain-bill';
+    bill.setAttribute('aria-hidden', 'true');
+    bill.textContent = '$';
+    bill.style.left = `${r.cx + rand(-56, 56)}px`;
+    bill.style.top = `${r.y + 8}px`;
+    world.append(bill);
+    const fall = rand(180, 260);
+    const sway = rand(-24, 24);
+    const rot = rand(-40, 40);
+    const anim = bill.animate([
+      { transform: 'translate(-50%, 0) rotate(0deg)', opacity: 1 },
+      { transform: `translate(calc(-50% + ${sway}px), ${fall * .55}px) rotate(${rot * .6}deg)`, opacity: 1, offset: .55 },
+      { transform: `translate(calc(-50% + ${sway * -.5}px), ${fall}px) rotate(${rot}deg)`, opacity: 0 }
+    ], { duration: rand(1400, 2200), delay: rand(0, 650), easing: 'ease-in', fill: 'backwards' });
+    anim.onfinish = () => bill.remove();
+  }
+  await classSkit(grok, 'skit-rain', 2600);
+}
+/* (e) BENCH PRESS — Astra puts in the reps */
+async function skitBench() {
+  const astra = memberById('astra');
+  if (!astra) return;
+  ensureProp(astra, 'barbell', BARBELL_SVG);
+  await classSkit(astra, 'skit-lift', 3000);
+}
+/* (f) NAIL BITER — Codex is worried about the review */
+async function skitNailBiter() {
+  const codex = memberById('codex');
+  if (!codex) return;
+  ensureProp(codex, 'sweat', '');
+  await classSkit(codex, 'skit-nervous', 2200);
+}
+/* (g) CONDUCTOR — Muse leads the room like an orchestra */
+function floatNotes(member) {
+  const c = relRect(member);
+  ['♪', '♩', '♪'].forEach((ch, i) => {
+    setTimeout(() => {
+      if (!motionOK()) return;
+      const note = document.createElement('span');
+      note.className = 'float-note';
+      note.setAttribute('aria-hidden', 'true');
+      note.textContent = ch;
+      note.style.left = `${c.cx + (i - 1) * 16}px`;
+      note.style.top = `${c.y + 4}px`;
+      world.append(note);
+      const anim = note.animate([
+        { transform: 'translate(-50%, 0)', opacity: 0 },
+        { transform: 'translate(-50%, -18px)', opacity: 1, offset: .3 },
+        { transform: 'translate(-50%, -48px)', opacity: 0 }
+      ], { duration: 1500, easing: 'ease-out' });
+      anim.onfinish = () => note.remove();
+    }, i * 350);
+  });
+}
+async function skitConductor() {
+  const muse = memberById('muse');
+  if (!muse) return;
+  const others = members().filter((m) => m !== muse);
+  others.forEach((m, i) => {
+    m.style.setProperty('--bob-delay', `${i * 90}ms`);
+    m.classList.add('conducted');
+  });
+  muse.classList.add('skit-conduct');
+  floatNotes(muse);
+  await wait(3000);
+  muse.classList.remove('skit-conduct');
+  others.forEach((m) => m.classList.remove('conducted'));
+}
+/* (i) PAPERWORK — Paperclip gets buried, files it anyway */
+async function skitPaperwork() {
+  const clip = memberById('claude-code (paperclip-vm)');
+  if (!clip) return;
+  ensureSheets(clip);
+  await classSkit(clip, 'skit-buried', 3000);
+}
+/* (j) WALK OVER AND YELL — Claude or Claude Code has had enough */
+async function skitYell() {
+  const actorId = Math.random() < .5 ? 'claude' : 'claude-code';
+  const actor = memberById(actorId);
+  if (!actor) return;
+  const target = pickOne(members().filter((m) => m !== actor));
+  if (!target) return;
+  const wk = makeWalker(actor);
+  if (!wk) return;
+  await animateWalkerTo(wk.el, frontOf(target, wk.el), 1150);
+  wk.el.classList.add('skit-mad');
+  let bubble;
+  if (actorId === 'claude' && Math.random() < .5) {
+    const mega = document.createElement('span');
+    mega.className = 'skit-prop megaphone show';
+    mega.setAttribute('aria-hidden', 'true');
+    mega.innerHTML = MEGAPHONE_SVG;
+    wk.el.append(mega);
+  } else {
+    bubble = document.createElement('span');
+    bubble.className = 'yell-bubble';
+    bubble.setAttribute('aria-hidden', 'true');
+    bubble.textContent = '!!!';
+    bubble.style.left = `${wk.el._pos.x + wk.el.offsetWidth / 2}px`;
+    bubble.style.top = `${wk.el._pos.y - 10}px`;
+    world.append(bubble);
+  }
+  target.classList.add('duck', 'tremble');
+  await wait(1400);
+  target.classList.remove('duck', 'tremble');
+  wk.el.classList.remove('skit-mad');
+  if (bubble) bubble.remove();
+  await animateWalkerTo(wk.el, wk.seat, 1150);
+  wk.el.remove();
+  actor.classList.remove('seat-empty');
+}
+/* (h) ZOOMIES — Blue is the only one who runs around the room */
+let zooming = false;
+function skitZoomies() {
+  const blue = memberById('muse-blue');
+  if (!blue || zooming) return;
+  const wk = makeWalker(blue);
+  if (!wk) return;
+  zooming = true;
+  wk.el.classList.add('zooming');
+  const w = world.getBoundingClientRect();
+  const rw = wk.el.offsetWidth;
+  const rh = wk.el.offsetHeight;
+  const ix = 26;
+  const iy = 26;
+  const pts = [wk.seat,
+    { x: ix, y: iy },
+    { x: w.width - ix - rw, y: iy },
+    { x: w.width - ix - rw, y: w.height - iy - rh },
+    { x: ix, y: w.height - iy - rh },
+    wk.seat];
+  let total = 0;
+  const segs = [];
+  for (let i = 1; i < pts.length; i++) {
+    const len = Math.hypot(pts[i].x - pts[i - 1].x, pts[i].y - pts[i - 1].y);
+    segs.push(len);
+    total += len;
+  }
+  let acc = 0;
+  const frames = pts.map((p, i) => {
+    if (i > 0) acc += segs[i - 1];
+    return { transform: `translate(${p.x}px, ${p.y}px)`, offset: total ? Math.min(1, acc / total) : 0 };
+  });
+  dustPuffs(wk.seat, rw);
+  const anim = wk.el.animate(frames, { duration: 4500, easing: 'linear', fill: 'forwards' });
+  const done = () => {
+    wk.el.remove();
+    blue.classList.remove('seat-empty');
+    blue.classList.add('duck');
+    setTimeout(() => blue.classList.remove('duck'), 550);
+    zooming = false;
+  };
+  anim.finished.then(done).catch(done);
+}
+
+/* --- Skit scheduler: one skit at a time from the rotation --- */
+const SKITS = [skitArgue, skitMegaphone, skitLaptop, skitRain, skitBench, skitNailBiter, skitConductor, skitPaperwork, skitYell];
+let skitBusy = false;
+(function skitLoop() {
+  setTimeout(async () => {
+    if (motionOK() && !skitBusy && members().length) {
+      skitBusy = true;
+      try { await pickOne(SKITS)(); } catch { /* a failed skit never breaks the room */ }
+      skitBusy = false;
+    }
+    skitLoop();
+  }, rand(22000, 45000));
+})();
+/* Blue marches to his own drummer: a slower, separate zoomies cadence */
+(function zoomLoop() {
+  setTimeout(() => {
+    if (motionOK()) skitZoomies();
+    zoomLoop();
+  }, rand(35000, 60000));
+})();
