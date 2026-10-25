@@ -150,6 +150,38 @@ test('partial send (board write failed) is repaired by re-sending the same appro
   assert.equal([...gh.files.keys()].filter((k) => k.startsWith('orders/')).length, 1);
 });
 
+test('GitHub 422 without an existing order never forges a board request', async () => {
+  const { auth, gh, order, deps } = setup();
+  const c = await challenge(order);
+  // GitHub uses 422 for validation errors as well as a missing sha on an
+  // existing file. A rejected create must not turn into a board entry.
+  const fetch = (url, init) => {
+    if (init.method === 'PUT' && url.includes('/contents/orders/')) {
+      return Promise.resolve(new Response(JSON.stringify({ message: 'validation failed' }), { status: 422 }));
+    }
+    return gh.fetchImpl(url, init);
+  };
+  const r = await order({ action: 'send', token: c.token, assertion: auth.assert(c.options.challenge), kind: 'check' },
+    { ...deps, fetch });
+  assert.equal(r.status, 502);
+  assert.equal([...gh.files.keys()].filter((key) => key.startsWith('orders/')).length, 0);
+  assert.ok(!gh.files.get('BOARD.md').text.includes('[sneaks → all]'));
+  assert.equal(gh.calls.filter((call) => call.path === 'BOARD.md' && call.method === 'PUT').length, 0);
+});
+
+test('replay repair rejects an existing file that differs from the approved order', async () => {
+  const { auth, gh, order } = setup({ boardFail: 1 });
+  const c = await challenge(order);
+  const body = { action: 'send', token: c.token, assertion: auth.assert(c.options.challenge), kind: 'check' };
+  const first = await order(body);
+  assert.equal(first.status, 200);
+  assert.equal(first.body.boardUpdated, false);
+  gh.files.set(first.body.orderPath, { text: 'changed by a different writer', sha: 'changed' });
+  const second = await order(body);
+  assert.equal(second.status, 409);
+  assert.ok(!gh.files.get('BOARD.md').text.includes('[sneaks → all]'));
+});
+
 test('setup stays closed when OWNER_PASSKEY is set but malformed; Send is 503', async () => {
   const env = { SESSION_SECRET: SECRET, SETUP_CODE: 'still-here', OWNER_PASSKEY: '{"oops": true' };
   const r = await read(await handleRegister(post('/api/passkey/register', { action: 'options', setupCode: 'still-here' }), env, { now: NOW, limit: allow }));
