@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="noindex">
+  <link rel="stylesheet" href="./shell.css">
+  <title>AI COMS · one-time passkey setup</title>
+</head>
+<body>
+  <main class="cockpit">
+    <section class="console" aria-labelledby="setup-title">
+      <h2 id="setup-title">One-time Face ID setup</h2>
+      <p class="console-note" style="text-align:left">For Sneaks only. This creates the passkey that locks "Send to crew". It works once: after the
+        <code>OWNER_PASSKEY</code> env var is set in Vercel, setup is closed.</p>
+      <label for="setup-code">Setup code (the <code>SETUP_CODE</code> env var you set in Vercel)</label>
+      <input id="setup-code" type="password" autocomplete="off" style="width:100%;padding:12px;font-size:15px;border-radius:12px;border:2px solid #8baba0">
+      <div class="dialog-actions"><button id="create-passkey" class="primary-button">Create passkey with Face ID</button></div>
+      <p id="setup-status" role="status"></p>
+      <div id="setup-result" hidden>
+        <label for="owner-passkey">Copy this into Vercel as <code>OWNER_PASSKEY</code> (a public key, not a secret), then redeploy:</label>
+        <textarea id="owner-passkey" readonly rows="5" style="width:100%;font-size:12px"></textarea>
+        <div class="dialog-actions"><button id="copy-owner" class="primary-button">Copy</button></div>
+      </div>
+    </section>
+  </main>
+  <script type="module" src="./setup.js"></script>
+</body>
+</html>

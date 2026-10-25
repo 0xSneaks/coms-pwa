@@ -1,5 +1,5 @@
-const CACHE = 'sneaks-coms-shell-v2-art';
-const SHELL = ['./', './index.html', './shell.css', './room.css', './app.js', './commands.js', './crew.json', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png', './icons/maskable-512.png', './icons/apple-touch-icon.png'];
+const CACHE = 'sneaks-coms-shell-v3-send';
+const SHELL = ['./', './index.html', './shell.css', './room.css', './app.js', './commands.js', './send.js', './crew.json', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png', './icons/maskable-512.png', './icons/apple-touch-icon.png'];
 self.addEventListener('install', (event) => event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(SHELL))));
 self.addEventListener('activate', (event) => event.waitUntil((async () => {
   await Promise.all((await caches.keys()).filter((key) => key.startsWith('sneaks-coms-shell-') && key !== CACHE).map((key) => caches.delete(key)));

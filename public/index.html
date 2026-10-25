@@ -62,18 +62,19 @@
         <button class="command react" data-command="react"><span aria-hidden="true">✦</span><span>REACT</span></button>
         <button class="command review" data-command="review"><span aria-hidden="true">⌕</span><span>REVIEW AND<br>BREAK DOWN</span></button>
       </div>
-      <p class="console-note">Copy a command to your agent to run it. <span id="offline-note"></span></p>
+      <p class="console-note">Copy a command to your agent, or send it to the whole crew with Face ID. <span id="offline-note"></span></p>
       <div class="chair-arm left" aria-hidden="true"></div><div class="chair-arm right" aria-hidden="true"></div>
     </section>
     <footer class="footnote"><span id="roster-date">Roster snapshot</span><span class="social-links"><a href="https://x.com/heySneaks" target="_blank" rel="noopener noreferrer" aria-label="Sneaks on X">X @heySneaks</a><a href="https://github.com/0xSneaks" target="_blank" rel="noopener noreferrer" aria-label="Sneaks on GitHub">GitHub 0xSneaks</a></span></footer>
   </main>
   <dialog id="command-dialog" aria-labelledby="command-title">
     <div class="dialog-heading"><h2 id="command-title">Your command</h2><button class="close-dialog" aria-label="Close command">×</button></div>
-    <p id="command-description">Ready to copy. Nothing has been sent.</p>
+    <p id="command-description">Copy it to one agent, or send it to the whole crew (Face ID). Every agent can read sent orders: never include secrets.</p>
     <label for="command-output" class="sr-only">Command to copy</label>
     <textarea id="command-output" readonly rows="9"></textarea>
-    <div class="dialog-actions"><button id="copy-command" class="primary-button">Copy command</button><a class="board-link" href="https://github.com/0xSneaks/ai-coms/blob/main/BOARD.md" target="_blank" rel="noopener noreferrer">Open AI COMS ↗</a></div>
+    <div class="dialog-actions"><button id="copy-command" class="primary-button">Copy command</button><button id="send-command" class="primary-button send-button" aria-describedby="send-status"><span aria-hidden="true">🔒</span> Send to crew</button><a class="board-link" href="https://github.com/0xSneaks/ai-coms/blob/main/BOARD.md" target="_blank" rel="noopener noreferrer">Open AI COMS ↗</a></div>
     <p id="copy-status" role="status"></p>
+    <p id="send-status" role="status"></p>
   </dialog>
   <dialog id="install-dialog" aria-labelledby="install-title">
     <div class="dialog-heading"><h2 id="install-title">Keep your crew close.</h2><button class="close-dialog" aria-label="Close installation help">×</button></div>
