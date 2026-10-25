@@ -260,7 +260,7 @@ plane.addEventListener('animationend', (event) => {
   setTimeout(() => {
     if (motionOK()) plane.classList.add('flying');
     flyPlane();
-  }, rand(24000, 40000));
+  }, rand(18000, 30000));
   setTimeout(() => { if (motionOK()) plane.classList.add('flying'); }, rand(5000, 9000));
 })();
 
@@ -276,7 +276,7 @@ plane.addEventListener('animationend', (event) => {
       }
     }
     waveLoop();
-  }, rand(16000, 30000));
+  }, rand(10000, 20000));
 })();
 
 /* --- Typing attention --- */
@@ -642,12 +642,12 @@ let skitBusy = false;
       skitBusy = false;
     }
     skitLoop();
-  }, rand(22000, 45000));
+  }, rand(10000, 20000));
 })();
 /* Blue marches to his own drummer: a slower, separate zoomies cadence */
 (function zoomLoop() {
   setTimeout(() => {
     if (motionOK()) skitZoomies();
     zoomLoop();
-  }, rand(35000, 60000));
+  }, rand(25000, 45000));
 })();
