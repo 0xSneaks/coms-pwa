@@ -5,6 +5,9 @@ export function composeCommand(kind, input = '') {
   const text = input.trim();
   const prelude = `First: read 0xSneaks/ai-coms/BOARD.md, RULE.md, the relevant projects/<project>.md and your inbox. Preserve other agents' claims. Label findings VERIFIED / INTENT / INFERENCE / UNKNOWN. Never include secrets.\nBoard: ${BOARD_URL}`;
   if (kind === 'check') return `CHECK COMS${text ? `\n\nFocus:\n${text}` : ''}\n\nReport the latest handoff, current owners, blockers and the exact next step.\n\n${prelude}`;
+  // Each agent answers by appending its own "✓ check" to this order's board
+  // line; Crew status reads those marks (lib/status.mjs parseRollCall).
+  if (kind === 'rollcall') return `ROLL CALL${text ? `\n\nNote:\n${text}` : ''}\n\nOn your next check-in, append \`· <your agent id> ✓ check <HH:MM> ET\` to the end of this order's [sneaks → all] line on BOARD.md. That is all; no handoff needed for this.\n\n${prelude}`;
   if (!['react', 'review'].includes(kind)) throw new Error('Unknown command');
   if (!text) throw new Error('Add an idea, a link, or text first.');
   const task = kind === 'react'

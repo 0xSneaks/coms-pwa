@@ -115,7 +115,7 @@ document.querySelectorAll('[data-command]').forEach((button) => {
       $('#send-status').textContent = current.text.length > MAX_SEND
         ? `Send takes up to ${MAX_SEND.toLocaleString()} characters; Copy works for this one.` : '';
       $('#send-command').disabled = !navigator.onLine;
-      $('#command-title').textContent = {check:'CHECK COMS',react:'REACT',review:'REVIEW AND BREAK DOWN'}[button.dataset.command];
+      $('#command-title').textContent = {check:'CHECK COMS',react:'REACT',review:'REVIEW AND BREAK DOWN',rollcall:'ROLL CALL'}[button.dataset.command];
       $('#copy-status').textContent = '';
       message('');
       showDialog('#command-dialog');
