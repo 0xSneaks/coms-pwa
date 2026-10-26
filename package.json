@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "test": "node --test test/*.test.mjs",
-    "check": "node --check public/app.js && node --check public/sw.js && node --check public/send.js && node --check public/setup.js && node --check public/status.js && node --check api/order.js && node --check api/status.js && node --check api/passkey/register.js && node --test test/*.test.mjs",
+    "check": "node --check public/app.js && node --check public/sw.js && node --check public/send.js && node --check public/setup.js && node --check public/status.js && node --check public/rollcall.js && node --check api/rollcall.js && node --check api/order.js && node --check api/status.js && node --check api/passkey/register.js && node --test test/*.test.mjs",
     "sync-roster": "node scripts/sync-roster.mjs"
   },
   "dependencies": {
