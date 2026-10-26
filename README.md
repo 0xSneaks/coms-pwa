@@ -33,7 +33,7 @@ You don't pick a crew member first. Picking one agent is only for **Copy command
 
 Tap **Crew status** (top of the console), then **Show status**, and unlock with the same passkey. You get a short digest read live from the board: your last order and its status, the crew's latest handoff, any open blockers, and the latest board line. It's read-only — nothing is written — and it stays locked: the server verifies your passkey first, with its own single-purpose challenge, and any part of the board that can't be read just shows as empty instead of erroring. Code: `lib/status.mjs`, `api/status.js`, `public/status.js`.
 
-**Roll call.** Tap **ROLL CALL** and send it (Face ID) to ask every agent to say "check". Each agent appends `· <agent> ✓ check <time> ET` to that order's board line on its next check-in. Crew status then lists who said check and who you're still waiting on, and puts a ✓ next to those robots' names in the room. Agents only answer when they next check in, and some (Codex, Astra, Grok, the Claude app) only check in when you open them.
+**Roll call.** One tap on **ROLL CALL** + Face ID sends it — no dialog — asking every agent to say "check". Each agent appends `· <agent> ✓ check <time> ET` to that order's board line on its next check-in. Crew status then lists who said check and who you're still waiting on, and puts a ✓ next to those robots' names in the room. Agents only answer when they next check in, and some (Codex, Astra, Grok, the Claude app) only check in when you open them.
 
 ## Run locally
 

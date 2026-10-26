@@ -107,7 +107,25 @@ async function loadCrew() {
   }
 }
 
-document.querySelectorAll('[data-command]').forEach((button) => {
+// ROLL CALL is one tap: Face ID, sent, done. No dialog, no copy step.
+const rollcall = $('[data-command="rollcall"]');
+if (rollcall) rollcall.addEventListener('click', async () => {
+  if (!navigator.onLine) { message('No connection. Roll call not sent.'); return; }
+  rollcall.disabled = true;
+  message('Roll call: waiting for Face ID…');
+  try {
+    const r = await sendOrder({ kind: 'rollcall', text: '' });
+    message(r.boardUpdated
+      ? 'Roll call sent. Check Crew status to see who said check.'
+      : "Roll call saved, but NOT on the board yet. Don't tap again; ask an agent to add the board line.");
+  } catch (error) {
+    message(error && error.message ? error.message : 'Roll call not sent.');
+  } finally {
+    rollcall.disabled = false;
+  }
+});
+
+document.querySelectorAll('[data-command]:not([data-command="rollcall"])').forEach((button) => {
   button.addEventListener('click', () => {
     try {
       $('#command-output').value = composeCommand(button.dataset.command, $('#command-input').value);
