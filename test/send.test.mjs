@@ -319,3 +319,16 @@ test('every command shows its own part first, before the shared board prelude', 
     assert.ok(composeCommand(kind, 'the task').indexOf('the task') < composeCommand(kind, 'the task').indexOf('BOARD.md'), kind);
   }
 });
+
+test('roll call: sends with no text, board line says ROLL CALL, file tells agents how to answer', async () => {
+  const { auth, gh, order } = setup();
+  const input = { kind: 'rollcall', text: '' };
+  const c = await challenge(order, input);
+  const r = await order({ action: 'send', token: c.token, assertion: auth.assert(c.options.challenge), ...input });
+  assert.equal(r.status, 200);
+  assert.equal(r.body.boardUpdated, true);
+  assert.ok(gh.files.get('BOARD.md').text.includes('- [sneaks → all] general · ROLL CALL · OPEN'));
+  const file = [...gh.files.entries()].find(([k]) => k.startsWith('orders/'))[1].text;
+  assert.match(file, /\*\*Kind:\*\* ROLL CALL/);
+  assert.match(file, /✓ check/);
+});

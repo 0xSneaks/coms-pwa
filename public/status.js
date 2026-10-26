@@ -23,7 +23,7 @@ export function passkeySupported() {
   return Boolean(window.PublicKeyCredential && navigator.credentials);
 }
 
-// -> { lastOrder, latestHandoff, blockers, boardLine } (see lib/status.mjs)
+// -> { lastOrder, latestHandoff, blockers, boardLine, rollCall } (see lib/status.mjs)
 export async function fetchStatus() {
   if (!passkeySupported()) throw new Error('This browser has no passkey support.');
   const { options, token } = await post('/api/status', { action: 'options' });
@@ -73,6 +73,26 @@ function renderStatus(bodyEl, d) {
     add('Blockers: none on the board.');
   }
   if (d.boardLine) add(`Latest board line: ${d.boardLine}`);
+  renderRollCall(add, d.rollCall);
+}
+
+// Roll call: who appended "✓ check" to the newest ROLL CALL line. Also puts
+// a ✓ next to each checked robot's name in the room (class only, no HTML).
+function renderRollCall(add, rc) {
+  const members = [...document.querySelectorAll('.crew-member[data-agent]')];
+  members.forEach((m) => m.classList.remove('checked'));
+  if (!rc) { add('Roll call: none open. Tap ROLL CALL to start one.'); return; }
+  const checked = new Set(rc.checked || []);
+  const said = [];
+  const waiting = [];
+  for (const m of members) {
+    const id = m.dataset.agent.toLowerCase();
+    const name = (m.querySelector('.crew-name')?.textContent || id).trim();
+    if (checked.has(id) || checked.has(name.toLowerCase())) { m.classList.add('checked'); said.push(name); }
+    else waiting.push(name);
+  }
+  add(`Roll call: ✓ ${said.length ? said.join(', ') : 'nobody yet'}`);
+  if (waiting.length) add(`Waiting on: ${waiting.join(', ')}`);
 }
 
 function initStatus() {
