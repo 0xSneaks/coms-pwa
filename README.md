@@ -33,7 +33,9 @@ You don't pick a crew member first. Picking one agent is only for **Copy command
 
 Tap **Crew status** (top of the console), then **Show status**, and unlock with the same passkey. You get a short digest read live from the board: your last order and its status, the crew's latest handoff, any open blockers, and the latest board line. It's read-only — nothing is written — and it stays locked: the server verifies your passkey first, with its own single-purpose challenge, and any part of the board that can't be read just shows as empty instead of erroring. Code: `lib/status.mjs`, `api/status.js`, `public/status.js`.
 
-**Roll call.** One tap on **ROLL CALL** + Face ID sends it — no dialog — asking every agent to say "check". Each agent appends `· <agent> ✓ check <time> ET` to that order's board line on its next check-in. Crew status then lists who said check and who you're still waiting on, and puts a ✓ next to those robots' names in the room. Agents only answer when they next check in, and some (Codex, Astra, Grok, the Claude app) only check in when you open them.
+## Roll call
+
+Tap **✓ Roll call** (yellow, above the console) to open the roll-call page. **START ROLL CALL** + Face ID sends one order asking every agent to say "check" (each appends `· <agent> ✓ check <HH:MM> ET` to that order's board line on its next check-in). The same page then lists the whole crew and ticks each one off as they answer, refreshing every 20 s for 30 minutes. **Just show who said check** reopens the live list without sending a new one. The live list uses a 30-minute read-only pass issued after Face ID; it can't send anything. Agents answer when they next check in — some (Codex, Astra, Grok, the Claude app) only when you open them. Code: `lib/rollcall.mjs`, `api/rollcall.js`, `public/rollcall.html`, `public/rollcall.js`.
 
 ## Run locally
 

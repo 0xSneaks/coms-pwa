@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#b9ebe6">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+  <link rel="icon" href="./icons/icon-192.png">
+  <link rel="stylesheet" href="./shell.css">
+  <title>Roll call · AI COMS</title>
+  <style>
+    .rc{max-width:560px;margin:auto;padding:max(16px,env(safe-area-inset-top)) 16px max(20px,env(safe-area-inset-bottom))}
+    .rc-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+    .rc-top a{color:#3d625a;font-size:14px;font-weight:700;text-decoration:none}
+    .rc-card{border:2px solid #658481;border-radius:26px;background:linear-gradient(165deg,#fff8db,#ead5b5);box-shadow:inset 0 3px #fffdf4,0 7px 0 #a7a18e;padding:20px}
+    .rc-card h1{font-size:24px;letter-spacing:1px}
+    .rc-sub{font-size:13px;color:#4c6663;margin:6px 0 16px;line-height:1.5}
+    .rc-go{width:100%;min-height:64px;border:2px solid #3d5955;border-radius:16px;background:#ffe08a;box-shadow:0 5px 0 #546661;font-size:18px;font-weight:900;letter-spacing:.5px}
+    .rc-go:active{transform:translateY(4px);box-shadow:0 1px 0 #546661}
+    .rc-watch{display:block;margin:12px auto 0;border:0;background:none;color:#3d625a;font-size:13px;font-weight:700;text-decoration:underline}
+    .rc-state{min-height:22px;margin:14px 0 4px;font-size:13px;font-weight:700;color:#2f5a50;text-align:center}
+    .rc-count{font-size:15px;font-weight:900;margin:18px 0 8px}
+    .rc-list{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+    .rc-list li{display:flex;justify-content:space-between;align-items:center;padding:11px 14px;border-radius:14px;background:#ffffffb3;border:1px solid #c9d6cf;font-size:15px;font-weight:700}
+    .rc-list li.ok{background:#d9f5df;border-color:#86c79a}
+    .rc-list .mark{font-size:13px;color:#6b7c76;font-weight:600}
+    .rc-list li.ok .mark{color:#2f7d4f;font-weight:900}
+  </style>
+</head>
+<body>
+  <main class="rc">
+    <div class="rc-top"><a href="./">← AI COMS</a><span class="rc-sub" id="rc-date"></span></div>
+    <section class="rc-card" aria-labelledby="rc-title">
+      <h1 id="rc-title">✓ Roll call</h1>
+      <p class="rc-sub">One tap + Face ID asks every agent to say "check". This page then fills in who answered, on its own, for 30 minutes.</p>
+      <button class="rc-go" id="rc-start">✓ START ROLL CALL</button>
+      <button class="rc-watch" id="rc-watch">Just show who said check</button>
+      <p class="rc-state" id="rc-state" role="status"></p>
+      <p class="rc-count" id="rc-count" hidden></p>
+      <ul class="rc-list" id="rc-list" aria-live="polite"></ul>
+    </section>
+  </main>
+  <script type="module" src="./rollcall.js"></script>
+</body>
+</html>

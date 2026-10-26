@@ -1,5 +1,5 @@
-const CACHE = 'sneaks-coms-shell-v6-rollcall';
-const SHELL = ['./', './index.html', './shell.css', './room.css', './app.js', './commands.js', './send.js', './status.js', './crew.json', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png', './icons/maskable-512.png', './icons/apple-touch-icon.png'];
+const CACHE = 'sneaks-coms-shell-v7-rollcall-page';
+const SHELL = ['./', './index.html', './shell.css', './room.css', './app.js', './commands.js', './send.js', './status.js', './rollcall.html', './rollcall.js', './crew.json', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png', './icons/maskable-512.png', './icons/apple-touch-icon.png'];
 self.addEventListener('install', (event) => event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(SHELL))));
 self.addEventListener('activate', (event) => event.waitUntil((async () => {
   await Promise.all((await caches.keys()).filter((key) => key.startsWith('sneaks-coms-shell-') && key !== CACHE).map((key) => caches.delete(key)));

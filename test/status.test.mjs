@@ -157,13 +157,13 @@ test('status: board reads fail soft — a GitHub outage still answers 200 with n
   const { options: opts, token } = await options(status);
   const r = await status({ action: 'view', token, assertion: auth.assert(opts.challenge) }, { ...deps, ...down });
   assert.equal(r.status, 200, JSON.stringify(r.body));
-  assert.deepEqual(r.body, { lastOrder: null, latestHandoff: null, blockers: [], boardLine: null, rollCall: null });
+  assert.deepEqual(r.body, { lastOrder: null, latestHandoff: null, blockers: [], boardLine: null });
 
   const missing = { fetchImpl: async () => new Response('{}', { status: 404 }) };
   const o2 = await options(status);
   const r2 = await status({ action: 'view', token: o2.token, assertion: auth.assert(o2.options.challenge) }, { ...deps, ...missing });
   assert.equal(r2.status, 200);
-  assert.deepEqual(r2.body, { lastOrder: null, latestHandoff: null, blockers: [], boardLine: null, rollCall: null });
+  assert.deepEqual(r2.body, { lastOrder: null, latestHandoff: null, blockers: [], boardLine: null });
 });
 
 test('status: request guard mirrors the order endpoint', async () => {
@@ -200,26 +200,4 @@ test('order file and board parsing', () => {
   const many = parseBoard(Array.from({ length: 6 }, (_, i) => `- BLOCKED item number ${i} with enough text to pass`).join('\n'));
   assert.equal(many.blockers.length, 3); // capped
   assert.deepEqual(parseBoard(''), { blockers: [], boardLine: null });
-});
-
-// --- Roll call ---------------------------------------------------------------
-import { parseRollCall as rc } from '../lib/status.mjs';
-
-test('parseRollCall: newest → all ROLL CALL line, agents that said check', () => {
-  const board = [
-    '- [sneaks → all] general · ROLL CALL · OPEN · 2026-10-25 → [order](orders/a.md) · muse ✓ check 09:00 ET',
-    '- [muse → codex] x · not a roll call · muse ✓ check',
-    '- [sneaks → all] general · ROLL CALL · OPEN · 2026-10-26 → [order](orders/b.md) · claude-code ✓ check 00:10 ET · Muse ✓ check 00:20 ET · claude-code ✓ check 00:30 ET · paperclip ✓ check'
-  ].join('\n');
-  const r = rc(board);
-  assert.deepEqual(r.checked, ['claude-code', 'muse', 'paperclip']);
-  assert.match(r.line, /orders\/b\.md|ROLL CALL/);
-  assert.ok(!r.line.includes('](') , 'markdown links stripped');
-});
-
-test('parseRollCall: none open, no checks, bad input', () => {
-  assert.equal(rc('- [sneaks → all] general · CHECK COMS · OPEN'), null);
-  assert.equal(rc(null), null);
-  assert.deepEqual(rc('- [claude-code → all] general · ROLL CALL for Sneaks · OPEN').checked, []);
-  assert.deepEqual(rc('- [sneaks → all] g · ROLL CALL · grok ✓ checked-out-text · codex ✓  CHECK').checked, ['codex']);
 });
