@@ -14,7 +14,13 @@ document.querySelectorAll('dialog').forEach((dialog) => {
   dialog.querySelector('.close-dialog').addEventListener('click', () => dialog.close());
   dialog.addEventListener('close', () => lastFocus?.focus());
 });
-function message(text) { $('#app-message').textContent = text; }
+// Toasts clear themselves (and on typing) so an old warning never sits over new text.
+let messageTimer;
+function message(text) {
+  clearTimeout(messageTimer);
+  $('#app-message').textContent = text;
+  if (text) messageTimer = setTimeout(() => { $('#app-message').textContent = ''; }, 4000);
+}
 
 // Boiler Bot V2 silhouette, visor, antenna and gauge from the reference SVG.
 // Personalities are keyed by roster ID, never by activity or membership position.
@@ -115,7 +121,7 @@ document.querySelectorAll('[data-command]').forEach((button) => {
       $('#send-status').textContent = current.text.length > MAX_SEND
         ? `Send takes up to ${MAX_SEND.toLocaleString()} characters; Copy works for this one.` : '';
       $('#send-command').disabled = !navigator.onLine;
-      $('#command-title').textContent = {check:'CHECK COMS',react:'REACT',review:'REVIEW AND BREAK DOWN'}[button.dataset.command];
+      $('#command-title').textContent = {check:'CHECK COMS',react:'REACT',review:'REVIEW AND BREAK DOWN',run:'RUN THE CREW'}[button.dataset.command];
       $('#copy-status').textContent = '';
       message('');
       showDialog('#command-dialog');
@@ -284,6 +290,7 @@ plane.addEventListener('animationend', (event) => {
   const input = $('#command-input');
   let typeTimer;
   input.addEventListener('input', () => {
+    if ($('#app-message').textContent) message('');
     document.body.classList.add('typing');
     clearTimeout(typeTimer);
     typeTimer = setTimeout(() => document.body.classList.remove('typing'), 1500);
