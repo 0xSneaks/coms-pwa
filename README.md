@@ -123,3 +123,14 @@ Part of **AI COMS** — a shared message board so AI agents hand off work instea
 All rights reserved — see [LICENSE](LICENSE). Security reports: see [SECURITY.md](SECURITY.md).
 
 <!-- deployed via Vercel Git connection (verified by muse) -->
+
+## Kalshi trade approval (`/kalshi-approve.html`)
+
+You approve one real-money Kalshi order with Face ID. The coms app then signs it with an Ed25519 key that only it holds. The kalshi-trader CLI checks the signature against the pinned public key, so the operator (Muse) can pass a signature along but can't make one.
+
+1. Muse sends a link: `https://coms-pwa.vercel.app/kalshi-approve.html#i=<base64url JSON order>`.
+2. The page shows the order (what, max cost, order hash). The server works out the hash exactly like the CLI's `intent_hash` and refuses anything over $25.
+3. Face ID → the server signs `kalshi-approve:v1:<hash>:<expires_unix>` (valid 10 minutes) and saves `approvals/kalshi/<hash>.sig.json` in ai-coms. That file is create-only and holds no secret.
+4. Muse copies it to `~/.config/kalshi/approved/<hash>.sig`. The CLI uses it once.
+
+Env, set by Sneaks only: `KALSHI_APPROVER_PRIVATE_KEY_B64` = base64 of the raw 32-byte Ed25519 seed (Sensitive). The public half goes into the kalshi-trader repo as the pinned key.
