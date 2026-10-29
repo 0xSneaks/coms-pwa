@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#b9ebe6">
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="./icons/icon-192.png">
+  <link rel="stylesheet" href="./shell.css">
+  <title>Approve trade · AI COMS</title>
+  <style>
+    .ka{max-width:560px;margin:auto;padding:max(16px,env(safe-area-inset-top)) 16px max(20px,env(safe-area-inset-bottom))}
+    .ka a{color:#3d625a;font-size:14px;font-weight:700;text-decoration:none}
+    .ka-card{margin-top:14px;border:2px solid #658481;border-radius:26px;background:linear-gradient(165deg,#fff8db,#ead5b5);box-shadow:inset 0 3px #fffdf4,0 7px 0 #a7a18e;padding:20px}
+    .ka-card h1{font-size:22px}
+    .ka-what{font-size:20px;font-weight:900;margin:14px 0 6px;overflow-wrap:anywhere}
+    .ka-row{font-size:14px;color:#3f5653;margin:4px 0}
+    .ka-hash{font:12px ui-monospace,monospace;color:#5a6f6b;overflow-wrap:anywhere;margin-top:10px}
+    .ka-go{width:100%;min-height:64px;margin-top:18px;border:2px solid #3d5955;border-radius:16px;background:#ffe08a;box-shadow:0 5px 0 #546661;font-size:18px;font-weight:900}
+    .ka-go:disabled{opacity:.5}
+    .ka-state{min-height:22px;margin:14px 0 0;font-size:14px;font-weight:700;color:#2f5a50;text-align:center;overflow-wrap:anywhere}
+    .ka-warn{font-size:13px;color:#7a3b2e;margin-top:10px}
+  </style>
+</head>
+<body>
+  <main class="ka">
+    <a href="./">← AI COMS</a>
+    <section class="ka-card" aria-labelledby="ka-title">
+      <h1 id="ka-title">Approve one Kalshi trade</h1>
+      <p class="ka-warn">Real money. Face ID signs exactly this order, once, for 10 minutes.</p>
+      <p class="ka-what" id="ka-what">Loading…</p>
+      <p class="ka-row" id="ka-total"></p>
+      <p class="ka-row" id="ka-tif"></p>
+      <p class="ka-hash" id="ka-hash"></p>
+      <button class="ka-go" id="ka-go" disabled>Face ID · approve</button>
+      <p class="ka-state" id="ka-state" role="status"></p>
+    </section>
+  </main>
+  <script src="./kalshi-approve.js" defer></script>
+</body>
+</html>
