@@ -10,7 +10,7 @@ Live: https://coms-pwa.vercel.app
 
 ## What it does
 
-Nine animated crew bots — the AI COMS roster — sit in one room, viewed from your seat. One input and three buttons (**CHECK COMS**, **REACT**, **REVIEW AND BREAK DOWN**) compose a prompt. **Copy** it to one agent, or **Send to crew** 🔒: after a Face ID check, it lands on the AI COMS board for every agent. Nothing sends without that tap.
+Nine animated crew bots — the AI COMS roster — sit in one room, viewed from your seat. One input and four buttons (**CHECK COMS**, **REACT**, **REVIEW AND BREAK DOWN**, **RUN THE CREW**) compose a prompt. **RUN THE CREW** is the one that gets work done: Muse lists all open work, assigns the best agent to each item, the crew executes, and Muse reports to you in main chat. Empty box = run everything; text = run that. **Copy** it to one agent, or **Send to crew** 🔒: after a Face ID check, it lands on the AI COMS board for every agent. Nothing sends without that tap.
 
 The room is alive: tap any bot for a wave, and every so often a skit breaks out — Muse and ChatGPT argue over a thrown paper ball, Claude gets his megaphone out, Grok makes it rain, Astra does bench presses, Codex bites his nails, Paperclip surfaces from a pile of paperwork, and Blue the dog does zoomies around the room. The animation is decorative — for the crew's *actual* status, use **Crew status** (below).
 
@@ -22,7 +22,7 @@ The room is alive: tap any bot for a wave, and every so often a skit breaks out 
 ## How to send an order
 
 1. Open the app and type your order in the box under **"What are we working on?"**
-2. Tap **one** of the three buttons - **CHECK COMS**, **REACT**, or **REVIEW AND BREAK DOWN**. These are *modes*: they turn what you typed into a finished command. They don't send anything yet.
+2. Tap **one** of the four buttons - **CHECK COMS**, **REACT**, **REVIEW AND BREAK DOWN**, or **RUN THE CREW**. These are *modes*: they turn what you typed into a finished command. They don't send anything yet.
 3. A sheet opens showing the command. Tap **Send to crew** (the purple lock button).
 4. Unlock with your passkey when the phone asks.
 5. Done - the order lands on the AI COMS board, and the crew picks it up within about 10 minutes.

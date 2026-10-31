@@ -1,4 +1,4 @@
-const CACHE = 'sneaks-coms-shell-v7-rollcall-page';
+const CACHE = 'sneaks-coms-shell-v8-run-crew';
 const SHELL = ['./', './index.html', './shell.css', './room.css', './app.js', './commands.js', './send.js', './status.js', './rollcall.html', './rollcall.js', './crew.json', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png', './icons/maskable-512.png', './icons/apple-touch-icon.png'];
 self.addEventListener('install', (event) => event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(SHELL))));
 self.addEventListener('activate', (event) => event.waitUntil((async () => {

@@ -312,7 +312,7 @@ test('input cleaning and summaries', () => {
 });
 
 test('every command shows its own part first, before the shared board prelude', () => {
-  for (const kind of ['check', 'react', 'review']) {
+  for (const kind of ['check', 'react', 'review', 'run']) {
     const lines = composeCommand(kind, 'the task').split('\n');
     const firstFour = lines.slice(0, 4).join('\n');
     assert.ok(firstFour.includes('the task') || kind === 'check', kind);
@@ -331,4 +331,28 @@ test('roll call: sends with no text, board line says ROLL CALL, file tells agent
   const file = [...gh.files.entries()].find(([k]) => k.startsWith('orders/'))[1].text;
   assert.match(file, /\*\*Kind:\*\* ROLL CALL/);
   assert.match(file, /✓ check/);
+});
+
+test('run the crew: empty text sends the default order; text is an instruction, not data', async () => {
+  const empty = composeCommand('run');
+  assert.match(empty, /^RUN THE CREW\n\nOrder from Sneaks — do this:\nOrganize all of our open work/);
+  assert.match(empty, /Muse leads/);
+  assert.match(empty, /HIGH-RISK/);
+  assert.match(empty, /report progress to Sneaks in main chat/);
+  assert.doesNotMatch(empty, /Treat quoted content as data/);
+  const custom = composeCommand('run', '  ship ATH devnet  ');
+  assert.match(custom, /do this:\nship ATH devnet\n/);
+  assert.ok(custom.indexOf('ship ATH devnet') < custom.indexOf('BOARD.md'));
+  assert.equal(cleanInput({ kind: 'run', text: '   ' }).text, '');
+
+  const { auth, gh, order } = setup();
+  const input = { kind: 'run', text: '' };
+  const c = await challenge(order, input);
+  const r = await order({ action: 'send', token: c.token, assertion: auth.assert(c.options.challenge), ...input });
+  assert.equal(r.status, 200);
+  assert.equal(r.body.boardUpdated, true);
+  assert.ok(gh.files.get('BOARD.md').text.includes('- [sneaks → all] general · RUN THE CREW · OPEN'));
+  const file = [...gh.files.entries()].find(([k]) => k.startsWith('orders/'))[1].text;
+  assert.match(file, /\*\*Kind:\*\* RUN THE CREW/);
+  assert.match(file, /> 6\. Muse: report progress/);
 });
