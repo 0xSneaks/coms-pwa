@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="referrer" content="no-referrer">
+  <title>AI COMS · Feedback Lab</title>
+  <link rel="stylesheet" href="./feedback.css">
+</head>
+<body>
+  <main class="card">
+    <p class="eyebrow">AI COMS / GUEST LAB</p>
+    <h1>Make the agents better.</h1>
+    <p class="intro">Talk with your Muse about an idea, criticism or bug. Ask it to summarize the point, review the summary yourself, and paste only what you want to share here.</p>
+    <p class="notice"><strong>Feedback only.</strong> Sending a suggestion does not start development, trade, deploy or change anyone's agent. Sneaks reviews proposals before any work is authorized.</p>
+    <form id="feedback-form">
+      <label for="invite">Private pilot invite code</label>
+      <input id="invite" name="invite" type="password" autocomplete="off" required minlength="20" maxlength="256">
+      <label for="name">Your name or handle (unverified)</label>
+      <input id="name" name="name" value="Noah" required maxlength="32">
+      <label for="project">Project slug</label>
+      <input id="project" name="project" value="general" required maxlength="40" pattern="[a-z0-9][a-z0-9-]*">
+      <label for="type">Feedback type</label>
+      <select id="type" name="type"><option>IDEA</option><option>CRITIQUE</option><option>BUG</option></select>
+      <label for="summary">What should change?</label>
+      <textarea id="summary" name="summary" required maxlength="2000" rows="5" placeholder="One focused idea or criticism, in your own words."></textarea>
+      <label for="reasoning">Why? (optional)</label>
+      <textarea id="reasoning" name="reasoning" maxlength="1200" rows="3"></textarea>
+      <label for="outcome">What would a good result look like? (optional)</label>
+      <textarea id="outcome" name="outcome" maxlength="600" rows="2"></textarea>
+      <label class="consent"><input id="consent" type="checkbox" required> I have reviewed this exact summary and agree to share it with Sneaks's AI COMS team.</label>
+      <button id="send" type="submit">Send for review — not execution</button>
+    </form>
+    <p id="result" role="status" aria-live="polite"></p>
+    <p class="footer">Private pilot. Do not submit secrets, private messages, personal records or wallet credentials. Names are not independently verified. No public submissions are enabled.</p>
+  </main>
+  <script type="module" src="./feedback.js"></script>
+</body>
+</html>
