@@ -290,3 +290,21 @@ body.typing .crew-member svg { transform: translateY(-3px); }
 .crew-member[data-presence="live"] .crew-detail { color: #17834a; font-weight: 750; }
 @keyframes speaking { 0%, 100% { filter: drop-shadow(0 0 4px #3ddc8488) drop-shadow(0 3px 0 #fff9db44); } 50% { filter: drop-shadow(0 0 11px #3ddc84ee) drop-shadow(0 3px 0 #fff9db44); } }
 #crew-status { white-space: pre-line; }
+
+/* --- Command buttons say what they do (they draft orders, not actions) --- */
+.console-howto { font-size: 11px; line-height: 1.45; color: #4b5f57; margin: 2px 0 0; }
+.cmd-text { display: grid; gap: 2px; text-align: left; }
+.cmd-text b { font-weight: 900; }
+.cmd-text small { font-size: .78em; font-weight: 650; letter-spacing: 0; opacity: .8; text-transform: none; }
+.command.needs-text { opacity: .6; }
+.command.needs-text small { color: #8a3b3b; opacity: 1; }
+@media (max-width:520px) { .console-howto { font-size: 9.5px; } .cmd-text small { font-size: 8px; } }
+.window-rail .status-link { background: #d9ccfa; color: #293b46; font-weight: 800; }
+.command-buttons { grid-template-columns: 1fr 1fr; }
+.window-rail .motion-button { white-space: nowrap; }
+@media (max-width:520px) {
+  .window-rail > span:first-child { display: none; }
+  .window-rail { justify-content: center; }
+  .rail-actions { width: 100%; justify-content: space-between; }
+  .rail-actions .motion-button { flex: 1; justify-content: center; text-align: center; padding: 7px 4px; }
+}

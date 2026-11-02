@@ -173,15 +173,33 @@ async function loadCrew() {
   }
 }
 
+// One button for CHECK COMS / REACT: empty box = status report, text = react
+// to it. REVIEW needs text: say so on the button instead of failing on tap.
+const commandKind = (kind) => (kind === 'check' && $('#command-input').value.trim() ? 'react' : kind);
+function syncCommandHints() {
+  const has = $('#command-input').value.trim().length > 0;
+  if (has && $('#app-message').textContent === 'Add an idea, a link, or text first.') message('');
+  const checkHint = document.querySelector('[data-check-hint]');
+  if (checkHint) checkHint.textContent = has ? 'crew reacts to your text' : 'crew reports status';
+  document.querySelectorAll('.command.review').forEach((b) => {
+    b.classList.toggle('needs-text', !has);
+    const hint = b.querySelector('[data-needs-text]');
+    if (hint) hint.textContent = has ? 'crew reviews your text' : 'type above first';
+  });
+}
+$('#command-input').addEventListener('input', syncCommandHints);
+syncCommandHints();
+
 document.querySelectorAll('[data-command]').forEach((button) => {
   button.addEventListener('click', () => {
     try {
-      $('#command-output').value = composeCommand(button.dataset.command, $('#command-input').value);
-      current = { kind: button.dataset.command, text: $('#command-input').value.trim() };
+      const kind = commandKind(button.dataset.command);
+      $('#command-output').value = composeCommand(kind, $('#command-input').value);
+      current = { kind, text: $('#command-input').value.trim() };
       $('#send-status').textContent = current.text.length > MAX_SEND
         ? `Send takes up to ${MAX_SEND.toLocaleString()} characters; Copy works for this one.` : '';
       $('#send-command').disabled = !navigator.onLine;
-      $('#command-title').textContent = {check:'CHECK COMS',react:'REACT',review:'REVIEW AND BREAK DOWN'}[button.dataset.command];
+      $('#command-title').textContent = `Draft order: ${{check:'CHECK COMS',react:'REACT',review:'REVIEW'}[kind]}`;
       $('#copy-status').textContent = '';
       message('');
       showDialog('#command-dialog');
@@ -244,7 +262,7 @@ $('#native-install').addEventListener('click', async () => {
 window.addEventListener('appinstalled', () => { $('#install-help').hidden = true; });
 if (matchMedia('(display-mode: standalone)').matches || navigator.standalone) $('#install-help').hidden = true;
 function connectivity() {
-  $('#connection-state').textContent = navigator.onLine ? 'Local command console' : 'Offline · room available';
+  $('#connection-state').textContent = navigator.onLine ? 'Orders to your crew' : 'Offline · copy only';
   $('#offline-note').textContent = navigator.onLine ? '' : 'GitHub needs a connection.';
 }
 window.addEventListener('online', connectivity); window.addEventListener('offline', connectivity); connectivity();
