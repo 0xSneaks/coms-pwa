@@ -69,6 +69,66 @@ function botSVG(color, shade, pose, index) {
   </svg>`;
 }
 
+/* --- Live presence: who's "on the call", from the public ai-coms board ---
+   Ring = posted in the last 15 min · green dot = active (3 h, or holding a
+   claim) · amber = idle today · grey = away. Data: GET /api/presence. */
+let crewSize = 0;
+let presence = {};
+let presenceTimer = null;
+const STATE_WORD = { live: 'on the mic', active: 'active', idle: 'idle today', away: 'away' };
+
+function ago(iso) {
+  if (!iso) return '';
+  const m = Math.max(0, Math.round((Date.now() - Date.parse(iso)) / 60e3));
+  if (m < 1) return 'now';
+  if (m < 60) return `${m}m`;
+  const h = Math.round(m / 60);
+  return h < 48 ? `${h}h` : `${Math.round(h / 24)}d`;
+}
+
+function presenceDetail(id) {
+  const p = presence[id];
+  if (!p) return 'Activity: no board posts found yet. Status comes from the ai-coms board.';
+  const bits = [`${STATE_WORD[p.state] || p.state}${p.lastSeen ? ` · last post ${ago(p.lastSeen)} ago` : ''}`];
+  if (p.project) bits.push(`Working on: ${p.project}`);
+  if (p.claim) bits.push(`Claim: ${p.claim}`);
+  if (p.summary) bits.push(`Latest: ${p.summary}`);
+  return bits.join('\n');
+}
+
+function paintPresence() {
+  let onCall = 0;
+  members().forEach((member) => {
+    const id = member.dataset.agent;
+    const p = presence[id];
+    const state = p ? p.state : 'away';
+    if (state === 'live' || state === 'active') onCall += 1;
+    member.dataset.presence = state;
+    const detail = member.querySelector('.crew-detail');
+    if (detail) detail.textContent = p && p.lastSeen ? `${p.project || member.dataset.subtitle} · ${ago(p.lastSeen)}` : member.dataset.subtitle;
+    member.setAttribute('aria-label', `${member.dataset.name}, ${STATE_WORD[state] || state}. View crew details`);
+  });
+  $('#crew-count').textContent = `${crewSize} crew · ${onCall} on the call`;
+}
+
+async function refreshPresence() {
+  if (document.visibilityState === 'hidden') return;
+  try {
+    const response = await fetch('./api/presence', { headers: { Accept: 'application/json' } });
+    if (!response.ok) throw new Error(String(response.status));
+    const data = await response.json();
+    if (data && typeof data.agents === 'object') { presence = data.agents; paintPresence(); }
+  } catch { /* offline or not set up: keep the last picture */ }
+}
+
+function startPresence() {
+  refreshPresence();
+  clearInterval(presenceTimer);
+  presenceTimer = setInterval(refreshPresence, 30e3);
+  setInterval(paintPresence, 60e3); // keep "3m" ages honest between fetches
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') refreshPresence(); });
+}
+
 async function loadCrew() {
   try {
     const response = await fetch('./crew.json');
@@ -88,11 +148,15 @@ async function loadCrew() {
       button.innerHTML = botSVG(color, shade, pose, index);
       const name = document.createElement('span'); name.className = 'crew-name'; name.textContent = agent.name;
       const detail = document.createElement('span'); detail.className = 'crew-detail'; detail.textContent = agent.subtitle || 'Crew member';
+      const dot = document.createElement('span'); dot.className = 'presence-dot'; dot.setAttribute('aria-hidden', 'true');
+      name.prepend(dot);
+      button.dataset.subtitle = agent.subtitle || 'Crew member';
+      button.dataset.name = agent.name;
       button.append(name, detail);
       button.addEventListener('click', () => {
         $('#crew-title').textContent = agent.name;
         $('#crew-role').textContent = agent.role;
-        $('#crew-status').textContent = 'Activity: unknown. This room keeps every crew member visible, whether working or idle. The animation is for fun.';
+        $('#crew-status').textContent = presenceDetail(agent.id);
         $('#crew-source').textContent = `Listed in ${agent.sources.join(' and ')}. Roster snapshot: ${new Date(data.syncedAt).toLocaleString()}.`;
         showDialog('#crew-dialog');
       });
@@ -100,6 +164,8 @@ async function loadCrew() {
     });
     crew.replaceChildren(fragment);
     $('#crew-count').textContent = `${data.agents.length} crew · everyone's here`;
+    crewSize = data.agents.length;
+    startPresence();
     $('#roster-date').textContent = `Roster: ${new Date(data.syncedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}`;
   } catch (error) {
     $('#crew-count').textContent = 'Roster unavailable';

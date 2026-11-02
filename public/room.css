@@ -275,3 +275,18 @@ body.typing .crew-member svg { transform: translateY(-3px); }
 .room-walker.skit-mad .anger-mark { opacity: 1; transform: scale(1); }
 .yell-bubble { position: absolute; z-index: 7; pointer-events: none; background: #fffdf4; border: 2px solid #d64545; color: #d64545; font: 900 13px/1.4 ui-rounded, system-ui, sans-serif; letter-spacing: 1px; padding: 3px 9px; border-radius: 46% 54% 58% 42% / 58% 44% 56% 42%; box-shadow: 0 2px 0 #d6454533; transform: translate(-50%, -100%) rotate(-4deg); animation: bubble-pop .25s ease-out 0s 1 both; }
 @keyframes bubble-pop { from{scale:.4;opacity:0} to{scale:1;opacity:1} }
+
+/* --- Live presence (Discord-call style) ---------------------------------
+   live = posted in the last 15 min: green speaking ring + glow
+   active = green dot · idle = amber dot · away = grey dot, bot dimmed */
+.presence-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 5px; vertical-align: 1px; background: #a7b3b5; box-shadow: 0 0 0 1.5px #fffbe8; }
+.crew-member[data-presence="live"] .presence-dot,
+.crew-member[data-presence="active"] .presence-dot { background: #2fb26a; }
+.crew-member[data-presence="idle"] .presence-dot { background: #e9a83a; }
+.crew-member[data-presence="live"] .crew-name { border-color: #2fb26a; box-shadow: 0 0 0 2px #2fb26a, 0 0 12px #2fb26a99; }
+.crew-member[data-presence="live"] svg { filter: drop-shadow(0 0 7px #3ddc84cc) drop-shadow(0 3px 0 #fff9db44); animation: speaking 1.4s ease-in-out infinite; }
+.crew-member[data-presence="away"] svg { opacity: .55; filter: grayscale(.55); }
+.crew-member[data-presence="away"].seat-empty svg { opacity: 0; }
+.crew-member[data-presence="live"] .crew-detail { color: #17834a; font-weight: 750; }
+@keyframes speaking { 0%, 100% { filter: drop-shadow(0 0 4px #3ddc8488) drop-shadow(0 3px 0 #fff9db44); } 50% { filter: drop-shadow(0 0 11px #3ddc84ee) drop-shadow(0 3px 0 #fff9db44); } }
+#crew-status { white-space: pre-line; }
