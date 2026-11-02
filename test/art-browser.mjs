@@ -51,12 +51,12 @@ try{
  }
  await page.locator('[data-command="review"]').click();assert.ok(await page.locator('#app-message').textContent());assert.ok(await page.locator('#command-input').evaluate(e=>e===document.activeElement));
  await page.locator('#command-input').fill('Review the glass room <script>alert(1)</script> & all agents.');
- for(const kind of ['check','react','review']){
+ for(const kind of ['check','review']){
   await page.locator(`[data-command="${kind}"]`).click();assert.ok(await page.locator('#command-dialog').evaluate(e=>e.open));assert.match(await page.locator('#command-output').inputValue(),/glass room/);
   await page.locator('#copy-command').click();await page.waitForFunction(()=>document.querySelector('#copy-status').textContent.length>0);assert.match(await page.locator('#copy-status').textContent(),/Copied|selected/);await closeDialog('#command-dialog');
  }
  await page.locator('#install-help').click();assert.match(await page.locator('#install-dialog').textContent(),/Safari/);await closeDialog('#install-dialog');
- report.checks.push('All crew keyboard dialogs, unknown status, Escape/focus restoration; 3 commands preserve input; validation, copy/fallback and install help pass.');
+ report.checks.push('All crew keyboard dialogs, unknown status, Escape/focus restoration; 2 commands (check→react with text, review) preserve input; validation, copy/fallback and install help pass.');
  await page.emulateMedia({reducedMotion:'reduce'});await page.reload();await page.waitForSelector('.crew-member');assert.equal(await page.evaluate(()=>document.getAnimations().length),0);
  await page.locator('#motion-toggle').click();assert.equal(await page.evaluate(()=>document.getAnimations().length),0);
  report.checks.push('Reduced motion: zero animations, including after Resume.');
