@@ -69,6 +69,70 @@ function botSVG(color, shade, pose, index) {
   </svg>`;
 }
 
+function transformerSVG(index) {
+  const shell = `url(#grok-shell-${index})`;
+  const face = (x, y) => `<use href="#grok-face-${index}" x="${x}" y="${y}"/>`;
+  return `<svg class="grok-transformer" viewBox="-3 -3 34 33" aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient id="grok-shell-${index}" x2=".8" y2="1">
+        <stop stop-color="#b8a2fa"/><stop offset="1" stop-color="#6355a3"/>
+      </linearGradient>
+      <g id="grok-face-${index}">
+        <rect x="-5" y="-2.6" width="10" height="5.2" rx="2.6" fill="#26334e"/>
+        <path d="M-3 .1q.9-1.5 1.8 0m2.4 0q.9-1.5 1.8 0" fill="none" stroke="#c6fff2" stroke-width=".85" stroke-linecap="round"/>
+        <path d="M-.8 1q.8.8 1.6 0" fill="none" stroke="#c6fff2" stroke-width=".42" stroke-linecap="round"/>
+      </g>
+    </defs>
+    <ellipse cx="12" cy="26" rx="9" ry="1.3" fill="#4b7e8533"/>
+    <g class="grok-form grok-home">
+      <g class="robot">
+        <path d="M12 5V2.7" stroke="#544482" stroke-width="1.1"/>
+        <circle cx="12" cy="2.2" r="1.25" fill="#ffdd88" stroke="#544482" stroke-width=".45"/>
+        <path d="M8.8 19.5V22h-1m7.4-2.5V22h1" stroke="#544482" stroke-width="2.35" stroke-linecap="round" fill="none"/>
+        <path d="M5 13.5l-2 2m16-2 2 2" stroke="#6c59a9" stroke-width="2.8" stroke-linecap="round"/>
+        <rect x="4.6" y="5" width="14.8" height="15.6" rx="6" fill="${shell}" stroke="#544482" stroke-width=".65"/>
+        <path d="M6.4 8q1-1.3 2.4-1.4" fill="none" stroke="#fff1ff" stroke-width=".65" stroke-linecap="round"/>
+        ${face(12, 10.8)}
+        <circle cx="12" cy="16.8" r="2.1" fill="#ffe59a" stroke="#544482" stroke-width=".45"/>
+        <path d="m11.1 17.5 1.8-1.5" stroke="#6355a3" stroke-width=".7" stroke-linecap="round"/>
+      </g>
+    </g>
+    <g class="grok-form grok-rocket">
+      <path d="M8.2 14.5l-4 5.5 5-.7m6.6-4.8 4 5.5-5-.7" fill="#ffcb7a" stroke="#544482" stroke-width=".65" stroke-linejoin="round"/>
+      <path d="M8.1 17.6C6 12 8.7 6.5 12 3.5c3.3 3 6 8.5 3.9 14.1l-2 2h-3.8z" fill="${shell}" stroke="#544482" stroke-width=".65"/>
+      <path d="M10.1 20h3.8Q14 22 12 24.2q-2-2.2-1.9-4.2" fill="#ffb464"/>
+      <path d="M11.2 20h1.6l-.8 2.4z" fill="#fff1a8"/>
+      ${face(12, 12.1)}
+    </g>
+    <g class="grok-form grok-rover">
+      <path d="M16 11l2.8-3" stroke="#544482" stroke-width=".8" stroke-linecap="round"/>
+      <circle cx="19" cy="7.8" r="1" fill="#ffdd88"/>
+      <rect x="2.4" y="17" width="19.2" height="6.4" rx="3.2" fill="#34405a"/>
+      <path d="M5.5 20.2h13" stroke="#b5d2df" stroke-width="1.7" stroke-dasharray="1.6 2.1" stroke-linecap="round"/>
+      <path d="M4 17l2.8-6.6h10.4L20 17v1.2H4z" fill="${shell}" stroke="#544482" stroke-width=".65" stroke-linejoin="round"/>
+      <circle cx="4.5" cy="16.5" r="1.15" fill="#ffdd88"/>
+      ${face(12, 14.2)}
+    </g>
+    <g class="grok-form grok-bunny">
+      <path d="M7.8 12 6.4 4.3q.3-2.8 2.8-.9l2 7.3m1.5 0 2.2-7.4q2.6-1.7 2.8 1.2l-1.5 7.6" fill="#aa94ea" stroke="#544482" stroke-width=".65" stroke-linecap="round"/>
+      <path d="m8.2 5.3 1.1 4.5m6.5-4.5-1.1 4.5" fill="none" stroke="#ffbdc9" stroke-width="1.25" stroke-linecap="round"/>
+      <path d="M8 20l-1 2.2h3.4m5.6-2.2 1 2.2h-3.4" fill="none" stroke="#544482" stroke-width="1.9" stroke-linecap="round"/>
+      <rect x="4.5" y="9.5" width="15" height="11.7" rx="5.8" fill="${shell}" stroke="#544482" stroke-width=".65"/>
+      ${face(12, 14.7)}
+      <circle cx="7.5" cy="17.7" r=".85" fill="#ffbdc9"/><circle cx="16.5" cy="17.7" r=".85" fill="#ffbdc9"/>
+    </g>
+    <g class="grok-piece grok-piece-left">
+      <rect x="3" y="12" width="4.5" height="4.5" rx="1.4" fill="#a78ce9" stroke="#544482" stroke-width=".6"/>
+      <circle cx="5.3" cy="14.2" r=".7" fill="#ffdd88"/>
+    </g>
+    <g class="grok-piece grok-piece-right">
+      <rect x="16.5" y="12" width="4.5" height="4.5" rx="1.4" fill="#a78ce9" stroke="#544482" stroke-width=".6"/>
+      <circle cx="18.7" cy="14.2" r=".7" fill="#ffdd88"/>
+    </g>
+    <path class="grok-sparks" d="M3 7v4m-2-2h4m16-4v4m-2-2h4m-1 12v3m-1.5-1.5h3" stroke="#fff0a4" stroke-width="1.1" stroke-linecap="round"/>
+  </svg>`;
+}
+
 /* --- Live presence: who's "on the call", from the public ai-coms board ---
    Ring = posted in the last 15 min · green dot = active (3 h, or holding a
    claim) · amber = idle today · grey = away. Data: GET /api/presence. */
@@ -145,7 +209,7 @@ async function loadCrew() {
       // Only fixed SVG geometry and developer-owned palette enter innerHTML.
       const [color, shade, pose] = looks[agent.id] || ['#a6c8ea', '#628caf', 'coffee'];
       button.dataset.personality = pose;
-      button.innerHTML = botSVG(color, shade, pose, index);
+      button.innerHTML = agent.id === 'grok-bot' ? transformerSVG(index) : botSVG(color, shade, pose, index);
       const name = document.createElement('span'); name.className = 'crew-name'; name.textContent = agent.name;
       const detail = document.createElement('span'); detail.className = 'crew-detail'; detail.textContent = agent.subtitle || 'Crew member';
       const dot = document.createElement('span'); dot.className = 'presence-dot'; dot.setAttribute('aria-hidden', 'true');
@@ -158,6 +222,7 @@ async function loadCrew() {
         $('#crew-role').textContent = agent.role;
         $('#crew-status').textContent = presenceDetail(agent.id);
         $('#crew-source').textContent = `Listed in ${agent.sources.join(' and ')}. Roster snapshot: ${new Date(data.syncedAt).toLocaleString()}.`;
+        $('#grok-transform').hidden = agent.id !== 'grok-bot';
         showDialog('#crew-dialog');
       });
       fragment.append(button);
@@ -239,14 +304,17 @@ $('#send-command').addEventListener('click', async () => {
   }
 });
 
-let paused = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+let paused = reducedMotion.matches;
 function motionState() {
   document.body.classList.toggle('motion-paused', paused);
   $('#motion-toggle').setAttribute('aria-pressed', String(paused));
   $('#motion-toggle').textContent = paused ? 'Resume motion' : 'Pause motion';
+  $('#grok-transform').disabled = paused || reducedMotion.matches;
 }
 $('#motion-toggle').addEventListener('click', () => { paused = !paused; motionState(); });
 motionState();
+reducedMotion.addEventListener('change', motionState);
 
 window.addEventListener('beforeinstallprompt', (event) => {
   event.preventDefault(); installPrompt = event; $('#native-install').hidden = false;
@@ -407,7 +475,6 @@ window.addEventListener('coms:order-sent', () => {
 /* --- Skit props: created once per member, shown by CSS during the skit --- */
 const MEGAPHONE_SVG = '<svg viewBox="0 0 48 34" focusable="false"><path d="M16 12L38 5v24L16 22Z" fill="#ffcb65" stroke="#b46a30" stroke-width="1.5"/><rect x="8" y="12" width="8" height="10" rx="2" fill="#e4572e"/><path d="M11 22v6h5v-6" fill="#e4572e"/><path class="mega-arc a1" d="M41 10q5 7 0 14" fill="none" stroke="#e4572e" stroke-width="2" stroke-linecap="round"/><path class="mega-arc a2" d="M44 7q7 10 0 20" fill="none" stroke="#e4572e" stroke-width="2" stroke-linecap="round"/></svg>';
 const LAPTOP_SVG = '<svg viewBox="0 0 56 38" focusable="false"><rect x="9" y="3" width="38" height="26" rx="3" fill="#35506b"/><rect x="12" y="6" width="32" height="20" rx="2" fill="#cfeeff"/><path d="M15 11h14M15 16h20M15 21h10" stroke="#5b87a8" stroke-width="2" stroke-linecap="round"/><path d="M5 33h46l-5-4H10Z" fill="#7b93a8"/></svg>';
-const BARBELL_SVG = '<svg viewBox="0 0 84 26" focusable="false"><rect x="1" y="11" width="82" height="4" rx="2" fill="#5a6b76"/><rect x="9" y="3" width="7" height="20" rx="2.5" fill="#c64751"/><rect x="18" y="6" width="6" height="14" rx="2" fill="#7a3542"/><rect x="68" y="3" width="7" height="20" rx="2.5" fill="#c64751"/><rect x="60" y="6" width="6" height="14" rx="2" fill="#7a3542"/></svg>';
 function ensureProp(member, cls, html) {
   let el = member.querySelector(`.skit-prop.${cls}`);
   if (!el) {
@@ -579,13 +646,23 @@ async function skitRain() {
   await classSkit(grok, 'skit-rain', 2600);
 }
 /* (e) BENCH PRESS — Astra puts in the reps */
-async function skitBench() {
-  const astra = memberById('astra');
-  if (!astra) return;
-  ensureProp(astra, 'barbell', BARBELL_SVG);
-  await classSkit(astra, 'skit-lift', 3000);
+async function skitTransform() {
+  const member = memberById('grok-bot');
+  if (!member || !motionOK() || reducedMotion.matches || member.classList.contains('skit-transform')) return;
+  member.classList.add('skit-transform');
+  try {
+    const timeline = member.querySelector('.grok-home').getAnimations()
+      .find((animation) => animation.animationName === 'grok-reassemble');
+    await timeline?.finished;
+  } catch { /* a change to reduced motion can cancel the timeline */ }
+  finally { member.classList.remove('skit-transform'); }
 }
-/* (f) NAIL BITER — Codex is worried about the review */
+
+$('#grok-transform').addEventListener('click', () => {
+  $('#crew-dialog').close();
+  skitTransform();
+});
+
 async function skitNailBiter() {
   const codex = memberById('codex');
   if (!codex) return;
@@ -716,13 +793,16 @@ function skitZoomies() {
 }
 
 /* --- Skit scheduler: one skit at a time from the rotation --- */
-const SKITS = [skitArgue, skitMegaphone, skitLaptop, skitRain, skitBench, skitNailBiter, skitConductor, skitPaperwork, skitYell];
+const SKITS = [skitArgue, skitMegaphone, skitLaptop, skitRain, skitTransform, skitNailBiter, skitConductor, skitPaperwork, skitYell];
 let skitBusy = false;
+let transformerDebut = true;
 (function skitLoop() {
   setTimeout(async () => {
     if (motionOK() && !skitBusy && members().length) {
       skitBusy = true;
-      try { await pickOne(SKITS)(); } catch { /* a failed skit never breaks the room */ }
+      const skit = transformerDebut && memberById('grok-bot') ? skitTransform : pickOne(SKITS);
+      transformerDebut = false;
+      try { await skit(); } catch { /* a failed skit never breaks the room */ }
       skitBusy = false;
     }
     skitLoop();
