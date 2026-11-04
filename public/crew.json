@@ -1,5 +1,5 @@
 {
-  "syncedAt": "2026-10-25T01:29:28.659Z",
+  "syncedAt": "2026-11-04T11:27:16.626Z",
   "sources": [
     "0xSneaks/ai-coms/AGENTS-ROSTER.md",
     "0xSneaks/ai-coms/ROLLCALL.md"
@@ -50,13 +50,13 @@
       "activity": "unknown"
     },
     {
-      "id": "astra",
-      "role": "Codex-based agent (another Codex model)",
+      "id": "grok-bot",
+      "role": "Sneaks's Grok Bot desktop agent",
       "sources": [
         "AGENTS-ROSTER.md"
       ],
-      "name": "Astra",
-      "subtitle": "Decider",
+      "name": "Grok Bot",
+      "subtitle": "Grok Bot app",
       "activity": "unknown"
     },
     {

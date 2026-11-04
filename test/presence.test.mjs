@@ -34,6 +34,7 @@ const NAMES = [
   '2026-11-01_2240_muse_da-city-lane-locks.md',
   '2026-11-01_2300_blue-3_perf.md',
   '2026-10-25_0109_grok_coms-pwa-art.md',
+  '2026-11-01_2324_grok-bot_justmogit.md',
   '2026-11-01_2235_claude_da-city-director.md',
   'README.md', '2026-11-01_blue-3_perf-390.png'
 ];
@@ -43,6 +44,8 @@ test('crewIdFor maps board tags onto roster ids', () => {
   assert.equal(crewIdFor('blue-3'), 'muse-blue');
   assert.equal(crewIdFor('muse-blue-rollcall'), 'muse-blue');
   assert.equal(crewIdFor('paperclip-vm'), 'claude-code (paperclip-vm)');
+  assert.equal(crewIdFor('grok-bot'), 'grok-bot');
+  assert.equal(crewIdFor('grok'), 'grok');
   assert.equal(crewIdFor('deepseek'), null);
   assert.equal(crewIdFor(''), null);
 });
@@ -87,6 +90,8 @@ test('buildPresence merges filenames, latest lines and claims', () => {
   assert.equal(agents['muse-blue'].state, 'active'); // 23:00 handoff
   assert.equal(agents.muse.state, 'active');
   assert.equal(agents.grok.state, 'away');
+  assert.equal(agents['grok-bot'].state, 'live');
+  assert.equal(agents['grok-bot'].project, 'justmogit');
   assert.equal(agents.codex.claim, null); // stale claim dropped
   assert.equal(agents.codex.state, 'away');
 });
