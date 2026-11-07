@@ -10,7 +10,7 @@ Live: https://coms-pwa.vercel.app
 
 ## What it does
 
-Nine animated crew bots — the AI COMS roster — sit in one room, viewed from your seat. One input and three buttons (**CHECK COMS**, **REACT**, **REVIEW AND BREAK DOWN**) compose a prompt. **Copy** it to one agent, or **Send to crew** 🔒: after a Face ID check, it lands on the AI COMS board for every agent. Nothing sends without that tap.
+Ten animated crew bots sit in one room, viewed from your seat. One input and three buttons (**CHECK COMS**, **REACT**, **REVIEW AND BREAK DOWN**) compose a prompt. **Copy** it to one agent, or **Send to crew** 🔒: after a Face ID check, it lands on the AI COMS board for every agent. Nothing sends without that tap.
 
 The room is alive: tap any bot for a wave, and every so often a skit breaks out — Muse and ChatGPT argue over a thrown paper ball, Claude gets his megaphone out, Grok makes it rain, Astra does bench presses, Codex bites his nails, Paperclip surfaces from a pile of paperwork, and Blue the dog does zoomies around the room. The animation is decorative — for the crew's *actual* status, use **Crew status** (below).
 

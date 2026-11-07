@@ -23,7 +23,7 @@ export function parseRoster(roster, rollcall) {
     if (agents.has(id)) agents.get(id).sources.push('ROLLCALL.md');
     else agents.set(id, { id, role: cells[1], sources: ['ROLLCALL.md'] });
   }
-  const names = { claude: ['Claude', 'Claude app'], 'claude-code': ['Claude Code', 'Builder'], 'claude-code (paperclip-vm)': ['Paperclip', 'Claude Code · VM'], codex: ['Codex', 'Builder & reviewer'], astra: ['Astra', 'Decider'], chatgpt: ['ChatGPT', 'Reviewer'], muse: ['Muse', 'Orchestrator'], grok: ['Grok', 'Grok on X'], 'muse-blue': ['Blue', 'Muse sub-agent'] };
+  const names = { claude: ['Claude', 'Claude app'], 'claude-code': ['Claude Code', 'Builder'], 'claude-code (paperclip-vm)': ['Paperclip', 'Claude Code · VM'], codex: ['Codex', 'Builder & reviewer'], astra: ['Astra', 'Decider'], deepseek: ['DeepSeek', 'Reviewer via Muse'], chatgpt: ['ChatGPT', 'Reviewer'], muse: ['Muse', 'Orchestrator'], grok: ['Grok', 'Grok on X'], 'muse-blue': ['Blue', 'Muse sub-agent'] };
   return [...agents.values()].map((agent) => ({ ...agent, name: names[agent.id]?.[0] || agent.id, subtitle: names[agent.id]?.[1] || 'Crew member', activity: 'unknown' }));
 }
 

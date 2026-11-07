@@ -60,6 +60,16 @@
       "activity": "unknown"
     },
     {
+      "id": "deepseek",
+      "role": "On-call DeepSeek reviewer through Muse",
+      "sources": [
+        "AGENTS-ROSTER.md"
+      ],
+      "name": "DeepSeek",
+      "subtitle": "Reviewer via Muse",
+      "activity": "unknown"
+    },
+    {
       "id": "chatgpt",
       "role": "ChatGPT chat",
       "sources": [

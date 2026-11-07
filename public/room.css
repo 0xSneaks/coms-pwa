@@ -27,6 +27,9 @@ body { background: radial-gradient(ellipse at 50% 0%, #fff9dd 0, #e7efdf 55%, #c
 .crew-grid { position: relative; z-index: 2; max-width: 980px; grid-template-columns: repeat(10,minmax(0,1fr)); gap: 10px 0; padding: 25px 22px 34px; align-items: end; }
 .crew-member { grid-column: span 2; border-radius: 18px; padding: 0 2px 6px; transition: background .2s; }
 .crew-member:nth-child(6) { grid-column: 2 / span 2; }
+@media (min-width:800px) {
+  .crew-grid:has(> :nth-child(10)) .crew-member:nth-child(6) { grid-column: span 2; }
+}
 .crew-member:nth-child(n+6) { margin-top: -7px; }
 .crew-member:hover { background: #ffffec5c; }
 .crew-member:focus-visible { outline-offset: 1px; background: #ffffec8c; }
@@ -94,6 +97,7 @@ body { background: radial-gradient(ellipse at 50% 0%, #fff9dd 0, #e7efdf 55%, #c
 @media (max-width:799px) {
   .cockpit { max-width: 640px; }
   .crew-grid { grid-template-columns: repeat(3,minmax(0,1fr)); padding: 21px 6% 20px; gap: 10px 4%; }
+  .crew-grid:has(> :nth-child(10)) { grid-template-columns: repeat(4,minmax(0,1fr)); column-gap: 2%; }
   .crew-member, .crew-member:nth-child(6) { grid-column: auto; }
   .crew-member:nth-child(n+6) { margin-top: 0; }
   .crew-member svg, .crew-member:nth-child(-n+5) svg { height: 89px; }
@@ -216,6 +220,13 @@ body.typing .crew-member svg { transform: translateY(-3px); }
 .crew-member.skit-lift .barbell { animation: press .9s ease-in-out 0s 3, prop-fade 3s linear 0s 1 both; }
 @keyframes press { 0%,100%{transform:translateY(11px)} 45%,60%{transform:translateY(-3px)} }
 @keyframes prop-fade { 0%{opacity:0} 8%,88%{opacity:1} 100%{opacity:0} }
+.capture-orb, .sea-sprite { top: 19%; opacity: 0; }
+.capture-orb { left: 56%; width: 24px; }
+.sea-sprite { left: 58%; width: 34px; }
+.skit-sea-sprite .capture-orb { animation: cast-orb .9s ease-out both; }
+.skit-sea-sprite .sea-sprite { animation: sprite-hop 2.1s ease-out .9s both; }
+@keyframes cast-orb { 0%,100%{opacity:0} 15%,75%{opacity:1} 50%{transform:translate(10px,-21px) rotate(150deg)} 100%{transform:translate(18px,4px) rotate(300deg)} }
+@keyframes sprite-hop { 0%,100%{opacity:0;transform:translateY(6px) scale(.5)} 20%,80%{opacity:1} 35%{transform:translateY(-9px) scale(1)} 65%{transform:translateY(2px) scale(1)} }
 .sweat { width: 9px; height: 9px; right: 15%; top: 4%; background: #7cc7e8; border-radius: 2px 50% 50% 50%; transform: rotate(45deg); opacity: 0; }
 .crew-member.skit-nervous .sweat { animation: sweat-slide 1.05s ease-in .15s 2 both; }
 @keyframes sweat-slide { 0%{opacity:0;transform:rotate(45deg) translate(0,0)} 25%{opacity:1} 100%{opacity:0;transform:rotate(45deg) translate(7px,7px)} }
