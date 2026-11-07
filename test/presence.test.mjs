@@ -43,7 +43,8 @@ test('crewIdFor maps board tags onto roster ids', () => {
   assert.equal(crewIdFor('blue-3'), 'muse-blue');
   assert.equal(crewIdFor('muse-blue-rollcall'), 'muse-blue');
   assert.equal(crewIdFor('paperclip-vm'), 'claude-code (paperclip-vm)');
-  assert.equal(crewIdFor('deepseek'), null);
+  assert.equal(crewIdFor('deepseek'), 'deepseek');
+  assert.equal(crewIdFor('unlisted-agent'), null);
   assert.equal(crewIdFor(''), null);
 });
 

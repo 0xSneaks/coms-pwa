@@ -25,6 +25,7 @@ const looks = {
   'claude-code (paperclip-vm)': ['#b7a0f8', '#7861b2', 'paper'],
   'codex': ['#5baaf7', '#3674b8', 'detective'],
   'astra': ['#ffd259', '#b78b2f', 'star'],
+  'deepseek': ['#71c4ff', '#3569c8', 'orb'],
   'chatgpt': ['#65d7ab', '#339579', 'garden'],
   'muse': ['#f88ec6', '#b95296', 'music'],
   'grok': ['#ffb369', '#b87036', 'pilot'],
@@ -37,6 +38,7 @@ function botSVG(color, shade, pose, index) {
     paper: '<g class="prop papers"><path d="M20 13l6 1-1 7-6-1z" fill="#fff9e7" stroke="#8f7aaf" stroke-width=".4"/><path d="M21 15l3 .5m-3.3 1 3 .5m-3.3 1 2 .3" stroke="#9e8ab4" stroke-width=".4"/><path d="M22.5 13.7l.3-1q.5-1 1 0l-.7 3q-.6 1-1 0l.4-1.8" fill="none" stroke="#656289" stroke-width=".4"/></g>',
     detective: '<g class="prop magnifier"><path d="M22 17l-2 3" stroke="#435a84" stroke-width="1.2" stroke-linecap="round"/><circle cx="23" cy="15" r="2.6" fill="#c3f8ff" fill-opacity=".7" stroke="#f4f7f1" stroke-width="1"/><path d="M22 14l1.5-.5" stroke="white" stroke-width=".6" stroke-linecap="round"/></g>',
     star: '<g class="prop star"><path d="M23 9l1 2 2.3.4-1.7 1.5.4 2.4-2-1.1-2 1.1.4-2.4-1.7-1.5 2.3-.4z" fill="#fff8b0" stroke="#c79331" stroke-width=".4"/><path d="M23 15v5" stroke="#aa7c34" stroke-width=".7"/></g><path d="M8 4L7 1l4 2 2-2 2 2 3-1-1 3" fill="#fff3a5" stroke="#bc8d3e" stroke-width=".4"/>',
+    orb: '<g class="prop"><circle cx="23" cy="15" r="3" fill="#fff7e9" stroke="#405b8c" stroke-width=".5"/><path d="M20 15a3 3 0 0 1 6 0z" fill="#ff7577"/><path d="M21 16l4-2" stroke="#405b8c" stroke-width=".5"/></g>',
     garden: '<g class="prop plant"><path d="M20 17h5l-.6 4h-3.8z" fill="#ffae9c" stroke="#b76e58" stroke-width=".4"/><path d="M22.5 17v-5" stroke="#398560" stroke-width=".6"/><path d="M22.5 15q-4 0-3-3 3 0 3 3m0-1q0-4 3-3 1 3-3 3" fill="#57c77a"/></g>',
     music: '<path d="M6 8q0-8 6-8t6 8" fill="none" stroke="#665184" stroke-width="1.3"/><rect x="4.8" y="7" width="2" height="4" rx="1" fill="#665184"/><rect x="17.2" y="7" width="2" height="4" rx="1" fill="#665184"/><g class="prop notes" fill="#865185"><path d="M23 10v5h.7v-3l3-1v3h.7V9z"/><ellipse cx="22.4" cy="15.2" rx="1.3" ry=".8"/><ellipse cx="26.4" cy="14.2" rx="1.3" ry=".8"/></g>',
     pilot: '<g class="prop airplane"><path d="M20 11l9-2-3 6-2-2-2 2v-3z" fill="#fffbea" stroke="#8c7996" stroke-width=".4"/><path d="M22 12l7-3-5 4" fill="none" stroke="#8c7996" stroke-width=".3"/></g><path d="M6 5q6-5 12 0" fill="#92cbd9" stroke="#468196" stroke-width=".5"/>',
@@ -408,6 +410,8 @@ window.addEventListener('coms:order-sent', () => {
 const MEGAPHONE_SVG = '<svg viewBox="0 0 48 34" focusable="false"><path d="M16 12L38 5v24L16 22Z" fill="#ffcb65" stroke="#b46a30" stroke-width="1.5"/><rect x="8" y="12" width="8" height="10" rx="2" fill="#e4572e"/><path d="M11 22v6h5v-6" fill="#e4572e"/><path class="mega-arc a1" d="M41 10q5 7 0 14" fill="none" stroke="#e4572e" stroke-width="2" stroke-linecap="round"/><path class="mega-arc a2" d="M44 7q7 10 0 20" fill="none" stroke="#e4572e" stroke-width="2" stroke-linecap="round"/></svg>';
 const LAPTOP_SVG = '<svg viewBox="0 0 56 38" focusable="false"><rect x="9" y="3" width="38" height="26" rx="3" fill="#35506b"/><rect x="12" y="6" width="32" height="20" rx="2" fill="#cfeeff"/><path d="M15 11h14M15 16h20M15 21h10" stroke="#5b87a8" stroke-width="2" stroke-linecap="round"/><path d="M5 33h46l-5-4H10Z" fill="#7b93a8"/></svg>';
 const BARBELL_SVG = '<svg viewBox="0 0 84 26" focusable="false"><rect x="1" y="11" width="82" height="4" rx="2" fill="#5a6b76"/><rect x="9" y="3" width="7" height="20" rx="2.5" fill="#c64751"/><rect x="18" y="6" width="6" height="14" rx="2" fill="#7a3542"/><rect x="68" y="3" width="7" height="20" rx="2.5" fill="#c64751"/><rect x="60" y="6" width="6" height="14" rx="2" fill="#7a3542"/></svg>';
+const ORB_SVG = '<svg viewBox="0 0 28 28" focusable="false"><circle cx="14" cy="14" r="11" fill="#fff7e9" stroke="#405b8c" stroke-width="2"/><path d="M3 14a11 11 0 0 1 22 0z" fill="#ff7577"/><path d="M6 18L22 10" stroke="#405b8c" stroke-width="2"/><path d="M14 10l3 3-3 4-3-3z" fill="#ffec9e"/></svg>';
+const SEA_SPRITE_SVG = '<svg viewBox="0 0 48 34" focusable="false"><path d="M8 19Q2 17 3 8q10 1 12 8l18 1Q36 8 45 7q0 9-7 13" fill="#70cbc5" stroke="#3e7596" stroke-width="1.5"/><path d="M9 23q0-11 14-11t14 11q0 8-14 8T9 23Z" fill="#ace9dd" stroke="#3e7596" stroke-width="1.5"/><circle cx="18" cy="22" r="1.7" fill="#314663"/><circle cx="28" cy="22" r="1.7" fill="#314663"/><path d="M21 25q2 2 4 0" fill="none" stroke="#314663" stroke-linecap="round"/></svg>';
 function ensureProp(member, cls, html) {
   let el = member.querySelector(`.skit-prop.${cls}`);
   if (!el) {
@@ -585,6 +589,13 @@ async function skitBench() {
   ensureProp(astra, 'barbell', BARBELL_SVG);
   await classSkit(astra, 'skit-lift', 3000);
 }
+async function skitSeaSprite() {
+  const deepseek = memberById('deepseek');
+  if (!deepseek) return;
+  ensureProp(deepseek, 'capture-orb', ORB_SVG);
+  ensureProp(deepseek, 'sea-sprite', SEA_SPRITE_SVG);
+  await classSkit(deepseek, 'skit-sea-sprite', 3000);
+}
 /* (f) NAIL BITER — Codex is worried about the review */
 async function skitNailBiter() {
   const codex = memberById('codex');
@@ -716,7 +727,7 @@ function skitZoomies() {
 }
 
 /* --- Skit scheduler: one skit at a time from the rotation --- */
-const SKITS = [skitArgue, skitMegaphone, skitLaptop, skitRain, skitBench, skitNailBiter, skitConductor, skitPaperwork, skitYell];
+const SKITS = [skitArgue, skitMegaphone, skitLaptop, skitRain, skitBench, skitSeaSprite, skitNailBiter, skitConductor, skitPaperwork, skitYell];
 let skitBusy = false;
 (function skitLoop() {
   setTimeout(async () => {
