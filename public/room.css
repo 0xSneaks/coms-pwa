@@ -29,6 +29,7 @@ body { background: radial-gradient(ellipse at 50% 0%, #fff9dd 0, #e7efdf 55%, #c
 .crew-member:nth-child(6) { grid-column: 2 / span 2; }
 @media (min-width:800px) {
   .crew-grid:has(> :nth-child(10)) .crew-member:nth-child(6) { grid-column: span 2; }
+  .crew-grid:has(> :nth-child(13)) .crew-member:nth-child(11) { grid-column: 3 / span 2; }
 }
 .crew-member:nth-child(n+6) { margin-top: -7px; }
 .crew-member:hover { background: #ffffec5c; }

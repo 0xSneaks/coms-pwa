@@ -29,6 +29,9 @@ const looks = {
   'chatgpt': ['#65d7ab', '#339579', 'garden'],
   'muse': ['#f88ec6', '#b95296', 'music'],
   'grok': ['#ffb369', '#b87036', 'pilot'],
+  'grok-bot': ['#c9a26b', '#8a6a3c', 'desktop'],
+  'opencode': ['#8fd16a', '#4d8a37', 'terminal'],
+  'beam': ['#ffe27a', '#c49a2c', 'beam'],
   'muse-blue': ['#7bdde6', '#3894a7', 'sleep']
 };
 function botSVG(color, shade, pose, index) {
@@ -42,6 +45,9 @@ function botSVG(color, shade, pose, index) {
     garden: '<g class="prop plant"><path d="M20 17h5l-.6 4h-3.8z" fill="#ffae9c" stroke="#b76e58" stroke-width=".4"/><path d="M22.5 17v-5" stroke="#398560" stroke-width=".6"/><path d="M22.5 15q-4 0-3-3 3 0 3 3m0-1q0-4 3-3 1 3-3 3" fill="#57c77a"/></g>',
     music: '<path d="M6 8q0-8 6-8t6 8" fill="none" stroke="#665184" stroke-width="1.3"/><rect x="4.8" y="7" width="2" height="4" rx="1" fill="#665184"/><rect x="17.2" y="7" width="2" height="4" rx="1" fill="#665184"/><g class="prop notes" fill="#865185"><path d="M23 10v5h.7v-3l3-1v3h.7V9z"/><ellipse cx="22.4" cy="15.2" rx="1.3" ry=".8"/><ellipse cx="26.4" cy="14.2" rx="1.3" ry=".8"/></g>',
     pilot: '<g class="prop airplane"><path d="M20 11l9-2-3 6-2-2-2 2v-3z" fill="#fffbea" stroke="#8c7996" stroke-width=".4"/><path d="M22 12l7-3-5 4" fill="none" stroke="#8c7996" stroke-width=".3"/></g><path d="M6 5q6-5 12 0" fill="#92cbd9" stroke="#468196" stroke-width=".5"/>',
+    desktop: '<g class="prop"><rect x="19" y="11" width="8" height="6" rx="1" fill="#35506b"/><rect x="20" y="12" width="6" height="4" rx=".5" fill="#cfeeff"/><path d="M21 13.3h3m-3 1.4h2" stroke="#5b87a8" stroke-width=".5" stroke-linecap="round"/><path d="M22 17v1.5h2V17m-3 1.5h4" stroke="#35506b" stroke-width=".6"/></g>',
+    terminal: '<g class="prop"><rect x="19" y="11" width="8" height="7" rx="1.2" fill="#22303c" stroke="#4d8a37" stroke-width=".4"/><path d="M20.5 13l1.5 1.2-1.5 1.2M23 15.6h2.5" fill="none" stroke="#8fd16a" stroke-width=".6" stroke-linecap="round"/></g>',
+    beam: '<g class="prop"><path d="M21 16l3-2 .8 1.4-3 2z" fill="#5a6b76"/><path d="M24.3 14.6L29 10v8z" fill="#fff6b0" fill-opacity=".75"/></g>',
     sleep: '<g class="prop sleepy"><path d="M20 14h3l-3 3h3m1-7h3l-3 3h3" fill="none" stroke="#418397" stroke-width=".65" stroke-linecap="round"/></g><path d="M6 6q2-6 8-5l4 3q-6-1-8 2" fill="#819ce4" stroke="#526bac" stroke-width=".4"/><circle cx="18" cy="4" r="1.2" fill="#fff6d7"/>'
   }[pose] || '';
   const eyes = pose === 'sleep'
