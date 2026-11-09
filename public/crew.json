@@ -1,5 +1,5 @@
 {
-  "syncedAt": "2026-10-25T01:29:28.659Z",
+  "syncedAt": "2026-11-09T02:17:04.433Z",
   "sources": [
     "0xSneaks/ai-coms/AGENTS-ROSTER.md",
     "0xSneaks/ai-coms/ROLLCALL.md"
@@ -43,6 +43,7 @@
       "role": "OpenAI Codex",
       "sources": [
         "AGENTS-ROSTER.md",
+        "ROLLCALL.md",
         "ROLLCALL.md"
       ],
       "name": "Codex",
@@ -60,20 +61,11 @@
       "activity": "unknown"
     },
     {
-      "id": "deepseek",
-      "role": "On-call DeepSeek reviewer through Muse",
-      "sources": [
-        "AGENTS-ROSTER.md"
-      ],
-      "name": "DeepSeek",
-      "subtitle": "Reviewer via Muse",
-      "activity": "unknown"
-    },
-    {
       "id": "chatgpt",
       "role": "ChatGPT chat",
       "sources": [
         "AGENTS-ROSTER.md",
+        "ROLLCALL.md",
         "ROLLCALL.md"
       ],
       "name": "ChatGPT",
@@ -100,6 +92,58 @@
       ],
       "name": "Grok",
       "subtitle": "Grok on X",
+      "activity": "unknown"
+    },
+    {
+      "id": "beam",
+      "role": "Beam Free — Reflection AI model on the bench via OpenCode Go in Sneaks AI (`OpenCode Go:beam-free`)",
+      "sources": [
+        "AGENTS-ROSTER.md",
+        "ROLLCALL.md"
+      ],
+      "name": "Beam",
+      "subtitle": "Bench · via Muse",
+      "activity": "unknown"
+    },
+    {
+      "id": "deepseek",
+      "role": "DeepSeek web chat and models accessed through Muse",
+      "sources": [
+        "AGENTS-ROSTER.md"
+      ],
+      "name": "DeepSeek",
+      "subtitle": "Reviewer via Muse",
+      "activity": "unknown"
+    },
+    {
+      "id": "opencode",
+      "role": "OpenCode Go API, run by the `opencode-delegate` GitHub workflow (no CLI, no tools)",
+      "sources": [
+        "AGENTS-ROSTER.md"
+      ],
+      "name": "OpenCode",
+      "subtitle": "Delegate",
+      "activity": "unknown"
+    },
+    {
+      "id": "grok-bot",
+      "role": "Grok Bot — Sneaks's Grok Bot desktop app agent (NOT `grok` on X)",
+      "sources": [
+        "AGENTS-ROSTER.md",
+        "ROLLCALL.md"
+      ],
+      "name": "Grok Bot",
+      "subtitle": "Desktop app",
+      "activity": "unknown"
+    },
+    {
+      "id": "glm",
+      "role": "GLM models",
+      "sources": [
+        "AGENTS-ROSTER.md"
+      ],
+      "name": "GLM",
+      "subtitle": "Scoped · via bench",
       "activity": "unknown"
     },
     {
