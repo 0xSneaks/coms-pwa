@@ -29,7 +29,11 @@ const looks = {
   'chatgpt': ['#65d7ab', '#339579', 'garden'],
   'muse': ['#f88ec6', '#b95296', 'music'],
   'grok': ['#ffb369', '#b87036', 'pilot'],
-  'muse-blue': ['#7bdde6', '#3894a7', 'sleep']
+  'muse-blue': ['#7bdde6', '#3894a7', 'sleep'],
+  'beam': ['#b8f26d', '#6da544', 'star'],
+  'opencode': ['#9fb4c7', '#54677d', 'builder'],
+  'grok-bot': ['#4dd0e1', '#1f7a8c', 'detective'],
+  'glm': ['#c3a6ea', '#7a5fa8', 'paper']
 };
 function botSVG(color, shade, pose, index) {
   const props = {
