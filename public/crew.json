@@ -103,6 +103,36 @@
       "activity": "unknown"
     },
     {
+      "id": "grok-bot",
+      "role": "Grok Bot — Sneaks's Grok Bot desktop app agent (not Grok on X)",
+      "sources": [
+        "AGENTS-ROSTER.md"
+      ],
+      "name": "Grok Bot",
+      "subtitle": "Desktop app",
+      "activity": "unknown"
+    },
+    {
+      "id": "opencode",
+      "role": "OpenCode Go API via the opencode-delegate workflow (text only)",
+      "sources": [
+        "AGENTS-ROSTER.md"
+      ],
+      "name": "OpenCode",
+      "subtitle": "Text-only helper",
+      "activity": "unknown"
+    },
+    {
+      "id": "beam",
+      "role": "Beam Free bench worker via Muse (throwaway prompts only)",
+      "sources": [
+        "AGENTS-ROSTER.md"
+      ],
+      "name": "Beam",
+      "subtitle": "Bench via Muse",
+      "activity": "unknown"
+    },
+    {
       "id": "muse-blue",
       "role": "Muse sub-agent (Blue) — Muse Wonder (Meta)",
       "sources": [
